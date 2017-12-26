@@ -24,6 +24,7 @@ export default class Component extends React.Component {
           radius: 72,
           percentage: 0.01,
           lineStyle: {
+            type: [20, 2],
             width: 6,
             color: {
               0: 'rgb(29,208,247)',

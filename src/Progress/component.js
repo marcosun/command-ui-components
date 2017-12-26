@@ -9,6 +9,7 @@ import {
   shape,
   oneOf,
   oneOfType,
+  arrayOf,
   } from 'prop-types';
 import merge from 'deepmerge';
 
@@ -23,7 +24,8 @@ export default class Component extends React.Component {
       radius: number,
       percentage: number,
       lineStyle: shape({
-        type: oneOf(['solid', 'dashed']),
+        type: oneOfType([string, arrayOf(number)]),
+        lineCap: oneOf('butt', 'round', 'square'),
         width: number,
         // Object represents color stops, i.e. {0: 'red', 0.5: 'green', 1: 'blue'}
         color: oneOfType([string, object]),
@@ -41,6 +43,7 @@ export default class Component extends React.Component {
       percentage: 1,
       lineStyle: {
         type: 'solid',
+        lineCap: 'butt',
         width: 2,
         color: 'red',
       },
@@ -98,20 +101,13 @@ export default class Component extends React.Component {
       width,
       height,
       arc: {
-        radius,
         percentage,
         lineStyle: {
-          type: lineType,
-          width: lineWidth,
           color: lineColor,
         },
       },
       backgroundColor,
     } = this.mergedProps;
-    const centre = {
-      x: width / 2,
-      y: height / 2,
-    };
 
     this.canvas.width = width;
     this.canvas.height = height;
@@ -123,45 +119,69 @@ export default class Component extends React.Component {
 
     // Draw arc
     if (typeof lineColor === 'object') { // Process color stops
-      this.drawGradientArcs(centre, radius, percentage, lineColor, lineWidth);
+      this.drawGradientArcs();
     } else {
       const startAngle = this.getAngle(0);
       const endAngle = this.getAngle(percentage);
-      this.drawSoleArc(centre, radius, startAngle, endAngle, lineColor, lineWidth);
+      this.drawSoleArc(startAngle, endAngle, lineColor);
     }
   }
 
   /**
    * Draw a single segment colourful arc
-   * @param  {object} centre - Centre point
-   * @param  {number} centre.x - Centre point
-   * @param  {number} centre.y - Centre point
-   * @param  {number} radius - Arc radius
    * @param  {number} startAngle - Start angle
    * @param  {number} endAngle - End angle
    * @param  {string} lineColor - Line colour
-   * @param  {number} lineWidth - Line width
    */
-  drawSoleArc(centre, radius, startAngle, endAngle, lineColor, lineWidth) {
+  drawSoleArc(startAngle, endAngle, lineColor) {
+    const {
+      width,
+      height,
+      arc: {
+        radius,
+        lineStyle: {
+          type: lineType,
+          width: lineWidth,
+          lineCap: lineCap,
+        },
+      },
+    } = this.mergedProps;
+    const centre = {
+      x: width / 2,
+      y: height / 2,
+    };
+
     this.ctx.beginPath();
     this.ctx.strokeStyle = lineColor;
     this.ctx.lineWidth = lineWidth;
-    this.ctx.lineCap = 'round';
+    this.ctx.lineCap = lineCap;
+    if (lineType !== 'solid') { // Dash line
+      this.ctx.setLineDash(lineType);
+    }
     this.ctx.arc(centre.x, centre.y, radius, startAngle, endAngle);
     this.ctx.stroke();
   }
 
   /**
    * Draw multiple segments gradient colourful arcs
-   * @param  {object} centre - Centre point
-   * @param  {number} centre.x - Centre point
-   * @param  {number} centre.y - Centre point
-   * @param  {number} radius - Arc radius
-   * @param  {number} percentage - Angle percentage
-   * @param  {object} gradientColors - Gradient colours
-   * @param  {number} lineWidth - Line width
    */
-  drawGradientArcs(centre, radius, percentage, gradientColors, lineWidth) {
+  drawGradientArcs() {
+    const {
+      width,
+      height,
+      arc: {
+        radius,
+        percentage,
+        lineStyle: {
+          color: gradientColors,
+        },
+      },
+    } = this.mergedProps;
+    const centre = {
+      x: width / 2,
+      y: height / 2,
+    };
+
     const getPosition = (angle) => {
       return {
         x: (centre.x + Math.cos(angle) * radius).toFixed(2),
@@ -218,7 +238,7 @@ export default class Component extends React.Component {
           arcPrviousEndAngle = segmentEndAngle;
 
           // Draw arc
-          this.drawSoleArc(centre, radius, segmentStartAngle, segmentEndAngle, lineGradient, lineWidth);
+          this.drawSoleArc(segmentStartAngle, segmentEndAngle, lineGradient);
         } else { // Should NOT draw arc because arc is shorter than gradient
 
         }
@@ -241,7 +261,9 @@ export default class Component extends React.Component {
    */
   render() {
     return (
-      <canvas ref={(c) => {this.canvas = c;}} style={this.mergedProps.style} />
+      <canvas ref={(c) => {
+        this.canvas = c;
+      }} style={this.mergedProps.style} />
     );
   }
 }
