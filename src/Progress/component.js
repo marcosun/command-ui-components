@@ -12,6 +12,7 @@ import {
   arrayOf,
   } from 'prop-types';
 import merge from 'deepmerge';
+import equal from 'deep-equal';
 
 /**
  * Progress Component
@@ -20,12 +21,15 @@ export default class Component extends React.Component {
   static propTypes = {
     width: number,
     height: number,
+    from: number,
+    to: number,
+    animateDuration: number,
     arc: shape({
       radius: number,
-      percentage: number,
+      // percentage: number,
       lineStyle: shape({
         type: oneOfType([string, arrayOf(number)]),
-        lineCap: oneOf('butt', 'round', 'square'),
+        lineCap: oneOf(['butt', 'round', 'square']),
         width: number,
         // Object represents color stops, i.e. {0: 'red', 0.5: 'green', 1: 'blue'}
         color: oneOfType([string, object]),
@@ -38,9 +42,12 @@ export default class Component extends React.Component {
   static defaultProps = {
     width: 0,
     height: 0,
+    from: 0,
+    to: 1,
+    animateDuration: 0,
     arc: {
       radius: 0,
-      percentage: 1,
+      // percentage: 1,
       lineStyle: {
         type: 'solid',
         lineCap: 'butt',
@@ -67,11 +74,14 @@ export default class Component extends React.Component {
    * Once mounted draw arc with canvas
    */
   componentDidMount() {
-    this.draw();
+    this.refresh();
   }
 
   /**
-   * Compare old and new merged Props and determine should update or not
+   * Never allow react to update canvas dom
+   * Instead, manually compare old and new props
+   * Execute pure javascript canvas api
+   * To refresh image
    * @param {Object} nextProps - Props
    * @return {boolean} - Should update React or not
    */
@@ -80,28 +90,75 @@ export default class Component extends React.Component {
     const newMergedProps = merge(Component.defaultProps, nextProps);
 
     // Compare old and new props
-    if (true) { // Props are different
+    if (equal(this.mergedProps, newMergedProps) === false) {
       this.mergedProps = newMergedProps;
-      return true; // Update UI
+      this.refresh(); // Totally refresh canvas
+    }
+
+    return false; // Never allow react to update canvas dom
+  }
+
+  /**
+   * Draw with canvas api from scratch
+   */
+  refresh() {
+    const {
+      width,
+      height,
+      from,
+      to,
+      animateDuration,
+    } = this.mergedProps;
+
+    this.canvas.width = width;
+    this.canvas.height = height;
+    this.ctx = this.canvas.getContext('2d');
+
+    if (animateDuration !== 0) {
+      this.animate();
+    } else {
+      this.draw({from, to});
     }
   }
 
   /**
-   * Once updated draw arc with canvas
+   * Animate function
    */
-  componentDidUpdate() {
-    this.draw();
+  animate() {
+    const animate = () => {
+      // Calcualte end percentage
+      const ends = from + step * currentFrame;
+      // Draw a segment
+      this.draw({from, to: ends});
+
+      currentFrame += 1;
+
+      currentFrame <= totalFrames
+        && window.requestAnimationFrame(animate); // Loop
+    };
+
+    const {
+      from,
+      to,
+      animateDuration,
+    } = this.mergedProps;
+
+    const totalFrames = Math.floor(animateDuration / 60); // Must ensure 60fps
+    const step = (to - from) / totalFrames;
+
+    let currentFrame = 1;
+
+    window.requestAnimationFrame(animate);
   }
 
   /**
    * Draw arc
    */
-  draw() {
+  draw({from, to}) {
     const {
       width,
       height,
       arc: {
-        percentage,
         lineStyle: {
           color: lineColor,
         },
@@ -109,20 +166,18 @@ export default class Component extends React.Component {
       backgroundColor,
     } = this.mergedProps;
 
-    this.canvas.width = width;
-    this.canvas.height = height;
-    this.ctx = this.canvas.getContext('2d');
+    this.canvas.width = width; // Clear canvas
 
     // Draw Background
     this.ctx.fillStyle = backgroundColor;
     this.ctx.fillRect(0, 0, width, height);
 
     // Draw arc
-    if (typeof lineColor === 'object') { // Process color stops
-      this.drawGradientArcs();
-    } else {
-      const startAngle = this.getAngle(0);
-      const endAngle = this.getAngle(percentage);
+    if (typeof lineColor === 'object') { // Draw with gradients
+      this.drawGradientArcs({from, to});
+    } else { // Draw with sole colour
+      const startAngle = this.getAngle(from);
+      const endAngle = this.getAngle(to);
       this.drawSoleArc(startAngle, endAngle, lineColor);
     }
   }
@@ -165,13 +220,19 @@ export default class Component extends React.Component {
   /**
    * Draw multiple segments gradient colourful arcs
    */
-  drawGradientArcs() {
+  drawGradientArcs({from, to}) {
+    const getPosition = (angle) => {
+      return {
+        x: (centre.x + Math.cos(angle) * radius).toFixed(2),
+        y: (centre.y + Math.sin(angle) * radius).toFixed(2),
+      };
+    };
+
     const {
       width,
       height,
       arc: {
         radius,
-        percentage,
         lineStyle: {
           color: gradientColors,
         },
@@ -182,15 +243,8 @@ export default class Component extends React.Component {
       y: height / 2,
     };
 
-    const getPosition = (angle) => {
-      return {
-        x: (centre.x + Math.cos(angle) * radius).toFixed(2),
-        y: (centre.y + Math.sin(angle) * radius).toFixed(2),
-      };
-    };
-
-    const arcStartAngle = this.getAngle(0);
-    const arcEndAngle = this.getAngle(percentage);
+    const arcStartAngle = this.getAngle(from);
+    const arcEndAngle = this.getAngle(to);
     // Mark where previous segment ends
     // Used to determine should draw new segment
     let arcPrviousEndAngle = arcStartAngle;

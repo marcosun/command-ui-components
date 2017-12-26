@@ -20,9 +20,11 @@ export default class Component extends React.Component {
       outerCircle: {
         width: 150,
         height: 150,
+        to: 0.76,
+        animateDuration: 2000,
         arc: {
           radius: 72,
-          percentage: 0.01,
+          // percentage: 0.01,
           lineStyle: {
             type: [20, 2],
             width: 6,
@@ -55,25 +57,16 @@ export default class Component extends React.Component {
    * Outer circle gradually grows from ground to limit
    */
   outerCircleAnimate() {
-    const step = 0.01;
-    const limit = 0.76;
-
-    const spin = () => {
+    setTimeout(() => {
       this.setState({ // Increment percentage
         ...this.state,
         outerCircle: {
           ...this.state.outerCircle,
-          arc: {
-            ...this.state.outerCircle.arc,
-            percentage: this.state.outerCircle.arc.percentage + step,
-          },
+          from: 0.76,
+          to: 0.5,
         },
       });
-      this.state.outerCircle.arc.percentage < limit
-        && window.requestAnimationFrame(spin); // Loop
-    };
-
-    window.requestAnimationFrame(spin);
+    }, 5000);
   }
 
   /**
