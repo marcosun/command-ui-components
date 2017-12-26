@@ -30,6 +30,7 @@ export default class Component extends React.Component {
       }),
     }),
     backgroundColor: string,
+    style: object,
   };
 
   static defaultProps = {
@@ -45,6 +46,7 @@ export default class Component extends React.Component {
       },
     },
     backgroundColor: 'transparent',
+    style: null,
   };
 
   /**
@@ -55,15 +57,43 @@ export default class Component extends React.Component {
   constructor(props) {
     super(props);
 
-    this.mergedProps = Component.defaultProps;
-
-    this.mergeProps(props);
+    this.mergedProps = merge(Component.defaultProps, props);
   }
 
   /**
    * Once mounted draw arc with canvas
    */
   componentDidMount() {
+    this.draw();
+  }
+
+  /**
+   * Compare old and new merged Props and determine should update or not
+   * @param {Object} nextProps - Props
+   * @return {boolean} - Should update React or not
+   */
+  shouldComponentUpdate(nextProps) {
+    // Construct new props
+    const newMergedProps = merge(Component.defaultProps, nextProps);
+
+    // Compare old and new props
+    if (true) { // Props are different
+      this.mergedProps = newMergedProps;
+      return true; // Update UI
+    }
+  }
+
+  /**
+   * Once updated draw arc with canvas
+   */
+  componentDidUpdate() {
+    this.draw();
+  }
+
+  /**
+   * Draw arc
+   */
+  draw() {
     const {
       width,
       height,
@@ -102,14 +132,6 @@ export default class Component extends React.Component {
   }
 
   /**
-   * Fill props with default values
-   * @param {Object} props - Props
-   */
-  mergeProps(props = {}) {
-    this.mergedProps = merge(this.mergedProps, props);
-  }
-
-  /**
    * Draw a single segment colourful arc
    * @param  {object} centre - Centre point
    * @param  {number} centre.x - Centre point
@@ -124,6 +146,7 @@ export default class Component extends React.Component {
     this.ctx.beginPath();
     this.ctx.strokeStyle = lineColor;
     this.ctx.lineWidth = lineWidth;
+    this.ctx.lineCap = 'round';
     this.ctx.arc(centre.x, centre.y, radius, startAngle, endAngle);
     this.ctx.stroke();
   }
@@ -217,10 +240,8 @@ export default class Component extends React.Component {
    * @return {Component}
    */
   render() {
-    console.log('rendered');
-
     return (
-      <canvas ref={(c) => {this.canvas = c;}} />
+      <canvas ref={(c) => {this.canvas = c;}} style={this.mergedProps.style} />
     );
   }
 }
