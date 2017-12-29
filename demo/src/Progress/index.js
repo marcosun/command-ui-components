@@ -1,12 +1,12 @@
 /**
- * @module View/Progress
+ * @module Demo/Progress/CircularProgress
  */
 import React from 'react';
 
-import {Progress} from 'ibusComponent';
+import {CircularProgress} from 'ibusComponent';
 
 /**
- * Exports Progress component
+ * Exports CircularProgress component
  */
 export default class Component extends React.Component {
   /**
@@ -70,8 +70,8 @@ export default class Component extends React.Component {
   }
 
   /**
-   * Render Progress component
-   * @return {Component} - Progress component
+   * Render CircularProgress component
+   * @return {Component} - CircularProgress component
    */
   render() {
     return (
@@ -79,10 +79,10 @@ export default class Component extends React.Component {
         position: 'relative',
         backgroundColor: 'black',
       }}>
-        <Progress {...this.state.innerCircle}
+        <CircularProgress {...this.state.innerCircle}
           style={{position: 'absolute', left: '0'}}
         />
-        <Progress {...this.state.outerCircle} />
+        <CircularProgress {...this.state.outerCircle} />
       </div>
     );
   }

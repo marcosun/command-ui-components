@@ -41,4 +41,10 @@ module.exports = {
       }
     ),
   ],
+
+  resolve: {
+    alias: {
+      Util: paths.utilPath,
+    },
+  },
 };

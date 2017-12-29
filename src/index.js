@@ -1,11 +1,4 @@
-import Progress from './Progress';
-
-const ibusComponent = {
-  Progress,
-};
-
-export {
-  Progress,
-};
-
-export default ibusComponent;
+/**
+ * @module IbusComponent
+ */
+export {CircularProgress} from './Progress';

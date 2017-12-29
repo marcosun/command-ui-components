@@ -1,6 +1,6 @@
 /**
  * This module specifies routes of this app
- * @module App/Router
+ * @module Demo/Router
  * @requires react
  * @requires react-router-dom
  * @requires {@link module:Progress}

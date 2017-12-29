@@ -1,5 +1,5 @@
 /**
- * @module Progress/Component
+ * @module Progress/CircularProgress
  */
 import React from 'react';
 import {
@@ -14,10 +14,12 @@ import {
 import merge from 'deepmerge';
 import equal from 'deep-equal';
 
+import {animate} from 'Util';
+
 /**
- * Progress Component
+ * Circular Progress Component
  */
-export default class Component extends React.Component {
+export default class CircularProgress extends React.Component {
   static propTypes = {
     width: number,
     height: number,
@@ -67,7 +69,7 @@ export default class Component extends React.Component {
   constructor(props) {
     super(props);
 
-    this.mergedProps = merge(Component.defaultProps, props);
+    this.mergedProps = merge(CircularProgress.defaultProps, props);
   }
 
   /**
@@ -87,7 +89,7 @@ export default class Component extends React.Component {
    */
   shouldComponentUpdate(nextProps) {
     // Construct new props
-    const newMergedProps = merge(Component.defaultProps, nextProps);
+    const newMergedProps = merge(CircularProgress.defaultProps, nextProps);
 
     // Compare old and new props
     if (equal(this.mergedProps, newMergedProps) === false) {
@@ -115,40 +117,15 @@ export default class Component extends React.Component {
     this.ctx = this.canvas.getContext('2d');
 
     if (animateDuration !== 0) {
-      this.animate();
+      animate({
+        from,
+        to,
+        duration: animateDuration,
+        callback: this.draw.bind(this),
+      });
     } else {
       this.draw({from, to});
     }
-  }
-
-  /**
-   * Animate function
-   */
-  animate() {
-    const animate = () => {
-      // Calcualte end percentage
-      const ends = from + step * currentFrame;
-      // Draw a segment
-      this.draw({from, to: ends});
-
-      currentFrame += 1;
-
-      currentFrame <= totalFrames
-        && window.requestAnimationFrame(animate); // Loop
-    };
-
-    const {
-      from,
-      to,
-      animateDuration,
-    } = this.mergedProps;
-
-    const totalFrames = Math.floor(animateDuration / 60); // Must ensure 60fps
-    const step = (to - from) / totalFrames;
-
-    let currentFrame = 1;
-
-    window.requestAnimationFrame(animate);
   }
 
   /**
@@ -310,7 +287,7 @@ export default class Component extends React.Component {
   }
 
   /**
-   * Render Progress component
+   * Render Circular Progress component
    * @return {Component}
    */
   render() {

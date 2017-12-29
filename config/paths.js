@@ -14,4 +14,5 @@ module.exports = {
   appConfig: resolveApp('config'),
   appIndexJs: resolveApp('src/index.js'),
   appPackageJson: resolveApp('package.json'),
+  utilPath: resolveApp('src/Util'),
 };

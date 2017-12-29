@@ -1,10 +1,10 @@
 /**
  * Insert react app into the dom and enable HMR
- * @module App
+ * @module Demo
  * @requires react
  * @requires react-dom
  * @requires react-hot-loader
- * @requires {@link module:App/Router}
+ * @requires {@link module:Demo/Router}
  */
 import React from 'react';
 import ReactDom from 'react-dom';
@@ -20,7 +20,7 @@ import Root from './router';
  * only to discover that one should ALWAYS put store on top level of containers.
  * {@link https://github.com/reactjs/react-redux/issues/356#issuecomment-333321556}
  * @param  {Router} Component - React router
- * created by {@link module:App/Router}
+ * created by {@link module:Demo/Router}
  */
 const render = (Component) => {
   ReactDom.render(
