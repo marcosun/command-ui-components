@@ -3,7 +3,7 @@
  */
 import React from 'react';
 
-import Progress from '../../src/Progress';
+import {Progress} from 'ibusComponent';
 
 /**
  * Exports Progress component

@@ -87,4 +87,10 @@ module.exports = {
       chunksSortMode: 'manual',
     }),
   ],
+
+  resolve: {
+    alias: {
+      ibusComponent: paths.ibusComponent,
+    },
+  },
 };
