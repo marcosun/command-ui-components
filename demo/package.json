@@ -1,7 +1,7 @@
 {
-  "name": "ibus-component-demo",
+  "name": "command-ui-components-demo",
   "version": "0.0.1",
-  "description": "Ibus React UI Component Demo",
+  "description": "Demo for command-ui-components",
   "main": "src/index.js",
   "scripts": {
     "start": "webpack-dev-server --config ./config/webpack.dev.js",

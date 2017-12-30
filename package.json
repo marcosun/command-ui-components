@@ -1,7 +1,7 @@
 {
-  "name": "ibus-component",
+  "name": "command-ui-components",
   "version": "0.0.1",
-  "description": "Ibus React UI Component",
+  "description": "A data visualisation ui components",
   "main": "src/index.js",
   "scripts": {
     "build:dev": "webpack --config ./config/webpack.dev.js",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:marcosun/ibus-component.git"
+    "url": "git@github.com:marcosun/command-ui-components.git"
   },
   "keywords": [],
   "author": "Marco",
