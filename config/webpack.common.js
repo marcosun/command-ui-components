@@ -34,7 +34,7 @@ module.exports = {
 
     // Clean dist folder
     new CleanWebpackPlugin(
-      ['dist'],
+      [paths.appDist],
       {
         root: paths.appPath,
         verbose: true,
