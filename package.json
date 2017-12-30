@@ -2,7 +2,6 @@
   "name": "command-ui-components",
   "version": "0.0.1",
   "description": "A data visualisation ui components",
-  "main": "src/index.js",
   "scripts": {
     "build:dev": "webpack --config ./config/webpack.dev.js",
     "build:prod": "webpack --config ./config/webpack.prod.js",
