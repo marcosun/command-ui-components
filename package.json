@@ -69,5 +69,9 @@
     "defaults",
     "Chrome >= 40",
     "ie >= 9"
+  ],
+  "files": [
+    "index.js",
+    "lib"
   ]
 }
