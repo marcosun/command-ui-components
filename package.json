@@ -72,6 +72,6 @@
   ],
   "files": [
     "index.js",
-    "lib"
+    "lib/*.js"
   ]
 }
