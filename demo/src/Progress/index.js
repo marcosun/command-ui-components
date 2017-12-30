@@ -3,7 +3,7 @@
  */
 import React from 'react';
 
-import {CircularProgress} from 'ibusComponent';
+import {CircularProgress} from 'command-ui-components';
 
 /**
  * Exports CircularProgress component

@@ -10,9 +10,9 @@ module.exports = {
   ],
 
   output: {
-    filename: 'ibusComponent.js',
+    filename: 'command-ui-components.js',
     path: paths.appDist,
-    library: 'ibusComponent',
+    library: 'commandUiComponents',
     libraryTarget: 'umd',
   },
 

@@ -90,7 +90,7 @@ module.exports = {
 
   resolve: {
     alias: {
-      ibusComponent: paths.ibusComponent,
+      'command-ui-components': paths.commandUiComponents,
     },
   },
 };
