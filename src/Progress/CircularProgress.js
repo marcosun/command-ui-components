@@ -21,8 +21,7 @@ import {animate} from 'Util';
  */
 export default class CircularProgress extends React.Component {
   static propTypes = {
-    width: number,
-    height: number,
+    size: number,
     from: number,
     to: number,
     animateDuration: number,
@@ -42,8 +41,7 @@ export default class CircularProgress extends React.Component {
   };
 
   static defaultProps = {
-    width: 0,
-    height: 0,
+    size: 0,
     from: 0,
     to: 1,
     animateDuration: 0,
@@ -105,15 +103,14 @@ export default class CircularProgress extends React.Component {
    */
   refresh() {
     const {
-      width,
-      height,
+      size,
       from,
       to,
       animateDuration,
     } = this.mergedProps;
 
-    this.canvas.width = width;
-    this.canvas.height = height;
+    this.canvas.width = size;
+    this.canvas.height = size;
     this.ctx = this.canvas.getContext('2d');
 
     if (animateDuration !== 0) {
@@ -133,8 +130,7 @@ export default class CircularProgress extends React.Component {
    */
   draw({from, to}) {
     const {
-      width,
-      height,
+      size,
       arc: {
         lineStyle: {
           color: lineColor,
@@ -143,11 +139,11 @@ export default class CircularProgress extends React.Component {
       backgroundColor,
     } = this.mergedProps;
 
-    this.canvas.width = width; // Clear canvas
+    this.canvas.width = size; // Clear canvas
 
     // Draw Background
     this.ctx.fillStyle = backgroundColor;
-    this.ctx.fillRect(0, 0, width, height);
+    this.ctx.fillRect(0, 0, size, size);
 
     // Draw arc
     if (typeof lineColor === 'object') { // Draw with gradients
@@ -167,8 +163,7 @@ export default class CircularProgress extends React.Component {
    */
   drawSoleArc(startAngle, endAngle, lineColor) {
     const {
-      width,
-      height,
+      size,
       arc: {
         radius,
         lineStyle: {
@@ -179,8 +174,8 @@ export default class CircularProgress extends React.Component {
       },
     } = this.mergedProps;
     const centre = {
-      x: width / 2,
-      y: height / 2,
+      x: size / 2,
+      y: size / 2,
     };
 
     this.ctx.beginPath();
@@ -206,8 +201,7 @@ export default class CircularProgress extends React.Component {
     };
 
     const {
-      width,
-      height,
+      size,
       arc: {
         radius,
         lineStyle: {
@@ -216,8 +210,8 @@ export default class CircularProgress extends React.Component {
       },
     } = this.mergedProps;
     const centre = {
-      x: width / 2,
-      y: height / 2,
+      x: size / 2,
+      y: size / 2,
     };
 
     const arcStartAngle = this.getAngle(from);
