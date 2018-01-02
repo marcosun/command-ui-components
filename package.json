@@ -1,6 +1,6 @@
 {
   "name": "command-ui-components",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A data visualisation ui components",
   "main": "src/index.js",
   "scripts": {
