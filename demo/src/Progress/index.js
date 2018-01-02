@@ -18,8 +18,7 @@ export default class Component extends React.Component {
 
     this.state = {
       outerCircle: {
-        width: 150,
-        height: 150,
+        size: 150,
         to: 0.76,
         animateDuration: 2000,
         arc: {
@@ -37,8 +36,7 @@ export default class Component extends React.Component {
         },
       },
       innerCircle: {
-        width: 150,
-        height: 150,
+        size: 150,
         arc: {
           radius: 66,
           percentage: 1,

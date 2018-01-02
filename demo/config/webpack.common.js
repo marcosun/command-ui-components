@@ -87,10 +87,4 @@ module.exports = {
       chunksSortMode: 'manual',
     }),
   ],
-
-  resolve: {
-    alias: {
-      'command-ui-components': paths.commandUiComponents,
-    },
-  },
 };

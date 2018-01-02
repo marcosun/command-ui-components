@@ -14,5 +14,4 @@ module.exports = {
   appConfig: resolveApp('config'),
   appIndexJs: resolveApp('src/index.js'),
   appPackageJson: resolveApp('package.json'),
-  commandUiComponents: resolveApp('../lib/command-ui-components.js'),
 };
