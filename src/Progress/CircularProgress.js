@@ -52,7 +52,7 @@ export default class CircularProgress extends React.Component {
         type: 'solid',
         lineCap: 'butt',
         width: 2,
-        color: 'red',
+        color: 'black',
       },
     },
     backgroundColor: 'transparent',
