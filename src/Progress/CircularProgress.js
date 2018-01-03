@@ -6,12 +6,10 @@ import {
   object,
   number,
   string,
-  shape,
   oneOf,
   oneOfType,
   arrayOf,
   } from 'prop-types';
-import merge from 'deepmerge';
 import equal from 'deep-equal';
 
 import {animate} from 'Util';
@@ -21,42 +19,28 @@ import {animate} from 'Util';
  */
 export default class CircularProgress extends React.Component {
   static propTypes = {
+    type: oneOfType([string, arrayOf(number)]),
     size: number,
     from: number,
     to: number,
-    animateDuration: number,
-    arc: shape({
-      radius: number,
-      // percentage: number,
-      lineStyle: shape({
-        type: oneOfType([string, arrayOf(number)]),
-        lineCap: oneOf(['butt', 'round', 'square']),
-        width: number,
-        // Object represents color stops, i.e. {0: 'red', 0.5: 'green', 1: 'blue'}
-        color: oneOfType([string, object]),
-      }),
-    }),
+    width: number,
+    lineCap: oneOf(['butt', 'round', 'square']),
+    // Object represents color stops, i.e. {0: 'red', 0.5: 'green', 1: 'blue'}
+    color: oneOfType([string, object]),
     backgroundColor: string,
-    style: object,
+    animateDuration: number,
   };
 
   static defaultProps = {
+    type: 'solid',
     size: 0,
     from: 0,
     to: 1,
-    animateDuration: 0,
-    arc: {
-      radius: 0,
-      // percentage: 1,
-      lineStyle: {
-        type: 'solid',
-        lineCap: 'butt',
-        width: 2,
-        color: 'black',
-      },
-    },
+    width: 2,
+    lineCap: 'butt',
+    color: 'black',
     backgroundColor: 'transparent',
-    style: null,
+    animateDuration: 0,
   };
 
   /**
@@ -67,7 +51,7 @@ export default class CircularProgress extends React.Component {
   constructor(props) {
     super(props);
 
-    this.mergedProps = merge(CircularProgress.defaultProps, props);
+    this.props = props;
   }
 
   /**
@@ -86,12 +70,9 @@ export default class CircularProgress extends React.Component {
    * @return {boolean} - Should update React or not
    */
   shouldComponentUpdate(nextProps) {
-    // Construct new props
-    const newMergedProps = merge(CircularProgress.defaultProps, nextProps);
-
     // Compare old and new props
-    if (equal(this.mergedProps, newMergedProps) === false) {
-      this.mergedProps = newMergedProps;
+    if (equal(this.props, nextProps) === false) {
+      this.props = nextProps; // Assign new props
       this.refresh(); // Totally refresh canvas
     }
 
@@ -107,7 +88,7 @@ export default class CircularProgress extends React.Component {
       from,
       to,
       animateDuration,
-    } = this.mergedProps;
+    } = this.props;
 
     this.canvas.width = size;
     this.canvas.height = size;
@@ -131,13 +112,9 @@ export default class CircularProgress extends React.Component {
   draw({from, to}) {
     const {
       size,
-      arc: {
-        lineStyle: {
-          color: lineColor,
-        },
-      },
+      color,
       backgroundColor,
-    } = this.mergedProps;
+    } = this.props;
 
     this.canvas.width = size; // Clear canvas
 
@@ -146,12 +123,12 @@ export default class CircularProgress extends React.Component {
     this.ctx.fillRect(0, 0, size, size);
 
     // Draw arc
-    if (typeof lineColor === 'object') { // Draw with gradients
+    if (typeof color === 'object') { // Draw with gradients
       this.drawGradientArcs({from, to});
     } else { // Draw with sole colour
       const startAngle = this.getAngle(from);
       const endAngle = this.getAngle(to);
-      this.drawSoleArc(startAngle, endAngle, lineColor);
+      this.drawSoleArc(startAngle, endAngle, color);
     }
   }
 
@@ -164,26 +141,22 @@ export default class CircularProgress extends React.Component {
   drawSoleArc(startAngle, endAngle, lineColor) {
     const {
       size,
-      arc: {
-        radius,
-        lineStyle: {
-          type: lineType,
-          width: lineWidth,
-          lineCap: lineCap,
-        },
-      },
-    } = this.mergedProps;
+      type,
+      width,
+      lineCap,
+    } = this.props;
     const centre = {
       x: size / 2,
       y: size / 2,
     };
+    const radius = (size - width) / 2; // line width offsets radius
 
     this.ctx.beginPath();
     this.ctx.strokeStyle = lineColor;
-    this.ctx.lineWidth = lineWidth;
+    this.ctx.lineWidth = width;
     this.ctx.lineCap = lineCap;
-    if (lineType !== 'solid') { // Dash line
-      this.ctx.setLineDash(lineType);
+    if (type !== 'solid') { // Dash line
+      this.ctx.setLineDash(type);
     }
     this.ctx.arc(centre.x, centre.y, radius, startAngle, endAngle);
     this.ctx.stroke();
@@ -202,17 +175,14 @@ export default class CircularProgress extends React.Component {
 
     const {
       size,
-      arc: {
-        radius,
-        lineStyle: {
-          color: gradientColors,
-        },
-      },
-    } = this.mergedProps;
+      width,
+      color: gradientColors,
+    } = this.props;
     const centre = {
       x: size / 2,
       y: size / 2,
     };
+    const radius = (size - width) / 2; // line width offsets radius
 
     const arcStartAngle = this.getAngle(from);
     const arcEndAngle = this.getAngle(to);
@@ -288,7 +258,7 @@ export default class CircularProgress extends React.Component {
     return (
       <canvas ref={(c) => {
         this.canvas = c;
-      }} style={this.mergedProps.style} />
+      }} />
     );
   }
 }

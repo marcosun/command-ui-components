@@ -20,31 +20,19 @@ export default class Component extends React.Component {
       outerCircle: {
         size: 150,
         to: 0.76,
-        animateDuration: 2000,
-        arc: {
-          radius: 72,
-          // percentage: 0.01,
-          lineStyle: {
-            type: [20, 2],
-            width: 6,
-            color: {
-              0: 'rgb(29,208,247)',
-              0.5: 'rgb(59,154,239)',
-              1: 'rgb(72,99,231)',
-            },
-          },
+        type: [20, 2],
+        width: 6,
+        color: {
+          0: 'rgb(29,208,247)',
+          0.5: 'rgb(59,154,239)',
+          1: 'rgb(72,99,231)',
         },
+        animateDuration: 2000,
       },
       innerCircle: {
-        size: 150,
-        arc: {
-          radius: 66,
-          percentage: 1,
-          lineStyle: {
-            width: 2,
-            color: '#173C63',
-          },
-        },
+        size: 136,
+        width: 2,
+        color: '#173C63',
       },
     };
 
@@ -76,11 +64,21 @@ export default class Component extends React.Component {
       <div style={{
         position: 'relative',
         backgroundColor: 'black',
+        height: '150px',
       }}>
-        <CircularProgress {...this.state.innerCircle}
-          style={{position: 'absolute', left: '0'}}
-        />
-        <CircularProgress {...this.state.outerCircle} />
+        <div style={{
+          position: 'absolute',
+          top: '7px',
+          left: '7px',
+        }}>
+          <CircularProgress {...this.state.innerCircle} />
+        </div>
+        <div style={{
+          position: 'absolute',
+          left: 0,
+        }}>
+          <CircularProgress {...this.state.outerCircle} />
+        </div>
       </div>
     );
   }
