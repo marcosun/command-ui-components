@@ -1,6 +1,6 @@
 {
   "name": "command-ui-components",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A data visualisation ui components",
   "scripts": {
     "build:dev": "webpack --config ./config/webpack.dev.js",
@@ -31,8 +31,7 @@
     ]
   },
   "dependencies": {
-    "deep-equal": "^1.0.1",
-    "deepmerge": "^2.0.1"
+    "deep-equal": "^1.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
