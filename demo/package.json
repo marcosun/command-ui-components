@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "command-ui-components": "^0.0.2",
+    "command-ui-components": "^0.0.3",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -37,7 +37,7 @@
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
-    "autoprefixer": "^7.1.6",
+    "autoprefixer": "^7.2.4",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-jest": "^22.0.4",

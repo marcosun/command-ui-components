@@ -1,4 +1,5 @@
 /**
  * @module IbusComponent
  */
-export {CircularProgress} from './Progress';
+export * from './Progress';
+export * from './Util';
