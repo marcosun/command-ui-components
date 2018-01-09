@@ -1,5 +1,10 @@
 /**
+ * Animate function calls 60 moves in a second
  * @module Util/Animate
+ * @param  {number} options.from - Start value
+ * @param  {number} options.to - End value
+ * @param  {number} options.duration - Animate duration
+ * @param  {function} options.callback - Callback for each move
  */
 export default function animate({from, to, duration, callback}) {
   const animate = () => {
