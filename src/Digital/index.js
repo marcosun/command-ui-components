@@ -29,7 +29,6 @@ export default class Digital extends React.Component {
 
   /**
    * Contstructor function
-   * Deep merge props with default values
    * @param {Object} props - Props
    */
   constructor(props) {
@@ -41,16 +40,15 @@ export default class Digital extends React.Component {
       from,
     } = this.props;
 
-    this.state = {
-      fromValInteger: from.toString().split('.')[0].split('').reverse(), // integer section array
-      fromValDecimal: from.toString().split('.')[1] ? from.toString().split('.')[1].split('') : [], // decimal section array
-    };
-  }
+    const [integer, decimal] = from.toString().split('.');
 
-  /**
-   * [componentDidMount]
-   */
-  componentDidMount() {
+    this.state = {
+      // Integer section array
+      fromValInteger: integer.split('').reverse(),
+      // Decimal section array
+      fromValDecimal: decimal ? decimal.split('') : [],
+    };
+
     this.refresh();
   }
 
