@@ -1507,12 +1507,6 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-command-ui-components@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/command-ui-components/-/command-ui-components-0.0.3.tgz#35a7c29e2a97b30a352773dcee46d4b0605b0a7f"
-  dependencies:
-    deep-equal "^1.0.1"
-
 commander@2.12.x, commander@^2.9.0, commander@~2.12.1:
   version "2.12.2"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.12.2.tgz#0f5946c427ed9ec0d91a46bb9def53e54650e555"

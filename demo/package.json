@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "command-ui-components": "^0.0.3",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
