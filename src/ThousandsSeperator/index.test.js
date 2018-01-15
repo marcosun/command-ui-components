@@ -1,4 +1,4 @@
-import thousandsSeperator from './index.js';
+import {thousandsSeperator} from './index.js';
 
 describe('thousandsSeperator', () => {
   test('values other than number and string in undefined out', () => {
