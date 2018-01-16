@@ -15,38 +15,43 @@ describe('thousandsSeperator', () => {
       .toBe(undefined);
   });
 
-  test('1 in 1 out', () => {
+  test('1 in "1" out', () => {
     expect(thousandsSeperator(1))
       .toBe('1');
   });
 
-  test('"1" in 1 out', () => {
+  test('"1" in "1" out', () => {
     expect(thousandsSeperator('1'))
       .toBe('1');
   });
 
-  test('1000 in 1 out', () => {
+  test('1000 in "1,000" out', () => {
     expect(thousandsSeperator(1000))
       .toBe('1,000');
   });
 
-  test('"1000" in 1 out', () => {
+  test('"1000" in "1,000" out', () => {
     expect(thousandsSeperator('1000'))
       .toBe('1,000');
   });
 
-  test('1000.012 in 1 out', () => {
+  test('1000.012 in "1,000.012" out', () => {
     expect(thousandsSeperator(1000.012))
       .toBe('1,000.012');
   });
 
-  test('"1000.012" in 1 out', () => {
+  test('"1000.012" in "1,000.012" out', () => {
     expect(thousandsSeperator('1000.012'))
       .toBe('1,000.012');
   });
 
-  test('"1000.0120" in 1 out', () => {
+  test('"1000.0120" in "1,000.0120" out', () => {
     expect(thousandsSeperator('1000.0120'))
-      .toBe('1,000.0120');
+      .toBe('1,000.012');
+  });
+
+  test('"001000.0120" in "1,000.0120" out', () => {
+    expect(thousandsSeperator('001000.0120'))
+      .toBe('1,000.012');
   });
 });
