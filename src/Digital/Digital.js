@@ -239,9 +239,9 @@ export default class Digital extends React.Component {
     // Interger of the number
     const fromSplittedInteger = fromInteger.split('');
     // Decimals of the number
-    const fromSplittedDecimal = fromDecimal && fromDecimal.split('');
+    const fromSplittedDecimal = fromDecimal.split('');
     const valueSplittedInteger = valueInteger.split('');
-    const valueSplittedDecimal = valueDecimal && valueDecimal.split('');
+    const valueSplittedDecimal = valueDecimal.split('');
 
     // An object containing each number and animation state
     this.integerNumbers = fromSplittedInteger.map((from, index) => {
