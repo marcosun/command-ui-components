@@ -1,6 +1,6 @@
 {
   "name": "command-ui-components",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A data visualisation ui components",
   "scripts": {
     "build:dev": "webpack --config ./config/webpack.dev.js",

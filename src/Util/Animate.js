@@ -20,7 +20,7 @@ export default function animate({from, to, duration, callback}) {
       && window.requestAnimationFrame(animate);
   };
 
-  const totalFrames = Math.floor(duration / 60); // Must ensure 60fps
+  const totalFrames = Math.floor(duration / 1000 * 60); // Must ensure 60fps
   const step = (to - from) / totalFrames;
 
   let currentFrame = 1; // start from 1
