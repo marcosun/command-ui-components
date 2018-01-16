@@ -9,7 +9,7 @@ export default function thousandsSeperator(input) {
 
   if (isNaN(+input)) return undefined; // NaN cannot be processed
 
-  // const stringify = input.toString();
+  // const stringify = Number(input).toString();
 
   // // Integers need to be seperated with dot
   // // Decimals remain unchanged
@@ -20,5 +20,6 @@ export default function thousandsSeperator(input) {
 
   // return `${commaIntegers}${decimals === void 0 ? '' : '.' + decimals}`;
 
-  return input.toString().replace(/^\d+/g, (m) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','));
+  // In case of 0 in front of integer, transform to number then to string
+  return Number(input).toString().replace(/^\d+/g, (m) => m.replace(/(?=(?!^)(\d{3})+$)/g, ','));
 }
