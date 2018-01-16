@@ -13,6 +13,7 @@ import {
 
 // Require Pages
 import Progress from './Progress';
+import Digital from './Digital';
 
 /**
  * @return {Router}
@@ -22,6 +23,7 @@ export default function Router() {
     <BrowserRouter>
       <div>
         <Route exact path="/progress" component={Progress} />
+        <Route exact path="/digital" component={Digital} />
       </div>
     </BrowserRouter>
   );
