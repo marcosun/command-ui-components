@@ -24,3 +24,12 @@ npm install --save command-ui-components
 |color|String \|\| Object|black|Progress color, for gradient colors, pass in an object of colour stops and corresponding colour names. Minimum three colour stops for gradient. i.e. {0: 'red', 0.5: 'green', 1: 'blue'}|
 |backgroundColor|String|transparent|Background colour|
 |animateDuration|Number|0|Animate duration in milliseconds|
+
+### 2. OdometerBoard
+
+#### Config Options
+|Name|Type|Default|Description|
+|:--:|:--:|:-----:|:----------|
+|data|Array|[{name: '行驶总里程（公里）',value: 485512,},...]|Name and value of every board|
+|data.name|String|行驶总里程（公里）|Name of every board|
+|data.value|Number|485512|Value of every board|
