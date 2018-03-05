@@ -5,6 +5,7 @@ import React from 'react';
 import {object, string, number, shape, arrayOf} from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import OdometerAnimate from 'react-odometerjs';
+import 'odometer/themes/odometer-theme-default.css';
 
 const styles = (theme) => ({
   root: {
