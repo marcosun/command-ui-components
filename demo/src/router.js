@@ -14,6 +14,8 @@ import {
 // Require Pages
 import Progress from './Progress';
 import Digital from './Digital';
+import OdometerBoard from './OdometerBoard';
+import ButtonGroup from './ButtonGroup';
 
 /**
  * @return {Router}
@@ -24,6 +26,8 @@ export default function Router() {
       <div>
         <Route exact path="/progress" component={Progress} />
         <Route exact path="/digital" component={Digital} />
+        <Route exact path="/odometerBoard" component={OdometerBoard} />
+        <Route exact path="/buttonGroup" component={ButtonGroup} />
       </div>
     </BrowserRouter>
   );

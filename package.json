@@ -1,6 +1,6 @@
 {
   "name": "command-ui-components",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A data visualisation ui components",
   "scripts": {
     "build:dev": "webpack --config ./config/webpack.dev.js",
@@ -31,7 +31,10 @@
     ]
   },
   "dependencies": {
-    "deep-equal": "^1.0.1"
+    "deep-equal": "^1.0.1",
+    "material-ui": "^1.0.0-beta.35",
+    "odometer": "^0.4.8",
+    "react-odometerjs": "^2.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -44,16 +47,19 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "clean-webpack-plugin": "^0.1.17",
+    "css-loader": "^0.28.10",
     "eslint": "^4.9.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-react": "^7.4.0",
     "jest": "^21.2.1",
     "jsdoc": "^3.5.5",
+    "postcss-loader": "^2.1.1",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dev-utils": "^4.1.0",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.0.0",
+    "style-loader": "^0.20.2",
     "uglifyjs-webpack-plugin": "^1.1.4",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.1",

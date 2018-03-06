@@ -25,6 +25,31 @@ module.exports = {
         include: paths.appSrc,
         loader: 'babel-loader',
       },
+
+      { // Styling
+        test: /\.css$/,
+        include: paths.nodeModulesPath,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: false,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              config: {
+                path: paths.appConfig,
+              },
+              sourceMap: true,
+            },
+          },
+        ],
+      },
     ],
   },
 
