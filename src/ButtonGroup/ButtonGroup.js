@@ -85,7 +85,8 @@ export default class ButtonGroup extends React.Component {
         id: buttonAll.id !== void 0 ? buttonAll.id : buttonAll.name,
         // isActive default to false
         isActive: buttonAll.isActive === true,
-        isFunctioning: buttonAll.name !== void 0, // Whether to show button 'select all'
+        // Whether to show button 'select all'
+        isFunctioning: buttonAll.name !== void 0,
       },
     };
 
@@ -144,7 +145,8 @@ export default class ButtonGroup extends React.Component {
 
   /**
    * Highlight multiple buttons
-   * @param {Object} target - Button object that active status should be switched
+   * @param {Object} target - Button object that active status
+   * should be switched
    * Whether it is highlight or reverse
    */
   setMultipleActive(target) {
@@ -154,7 +156,8 @@ export default class ButtonGroup extends React.Component {
     } = this.state;
 
     if (buttonAll.id === target.id) { // Click on button 'all'
-      const isHighlight = !buttonAll.isActive; // Whether to hightlight or unhighlight all buttons
+      // Whether to hightlight or unhighlight all buttons
+      const isHighlight = !buttonAll.isActive;
 
       if (isHighlight === true) { // Highlight every single buttons
         this.setState({
@@ -189,7 +192,9 @@ export default class ButtonGroup extends React.Component {
         ...this.state,
         buttons: buttons.map((button) => ({
           ...button,
-          isActive: target.id === button.id ? !button.isActive : button.isActive,
+          isActive: target.id === button.id
+            ? !button.isActive
+            : button.isActive,
         })),
       };
 
@@ -233,7 +238,7 @@ export default class ButtonGroup extends React.Component {
           ...buttonAll,
           isActive: false,
         },
-      }
+      };
     }
   }
 
