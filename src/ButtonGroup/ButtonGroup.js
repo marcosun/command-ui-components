@@ -120,9 +120,33 @@ export default class ButtonGroup extends React.Component {
       }
     }
 
-    // if (this.isButtonAllFunctioning() === true) {
-    //   this.setButtonAllActive();
-    // }
+    /**
+     * Call parent component onClick handler with clicked button
+     * and all selected buttons
+     */
+    if (typeof this.props.onClick === 'function') {
+      // Wait until state has been updated
+      setTimeout(() => {
+        let clickedButton = {
+          name: button.name,
+          id: button.id,
+        };
+
+        // Find all highlighted buttons
+        let selectedButtons = this.state.buttons.filter((button) => {
+          return button.isActive === true;
+        });
+        // Return name and id property only
+        selectedButtons = selectedButtons.map((button) => {
+          return {
+            name: button.name,
+            id: button.id,
+          };
+        });
+
+        this.props.onClick(clickedButton, selectedButtons);
+      });
+    }
   }
 
   /**

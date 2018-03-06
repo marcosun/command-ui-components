@@ -57,4 +57,4 @@ You can override all the class names injected by Command-UI-Components thanks to
 |buttonAll.name|String||Y|Button name|
 |buttonAll.id|String||N|Button id. Equal to name if omitted. Locally unique|
 |buttonAll.isActive|Boolean|false|N|Should button selected|
-|onClick|Function||N|Button click callback
+|onClick|Function||N|Accept two arguments: clicked button object and all selected button list|

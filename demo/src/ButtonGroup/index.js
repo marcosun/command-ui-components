@@ -16,6 +16,12 @@ export default class Component extends React.Component {
   constructor(props) {
     super(props);
 
+    this.props = props;
+    this.state = {
+      clickedButton: null,
+      selectedButtons: null,
+    };
+
     this.buttons = [{
       name: '选择1',
     }, {
@@ -27,6 +33,18 @@ export default class Component extends React.Component {
     this.buttonAll = {
       name: '全部',
     };
+  }
+
+  /**
+   * Button group click handler
+   * @param  {Object} button - Clicked button object
+   * @param  {Object} selectedButtons - An array contains all selected buttons
+   */
+  onClick(button, selectedButtons) {
+    this.setState({
+      clickedButton: JSON.stringify(button),
+      selectedButtons: JSON.stringify(selectedButtons),
+    });
   }
 
   /**
@@ -47,6 +65,16 @@ export default class Component extends React.Component {
         <div>
           <div>Multiple Select with All Button</div>
           <ButtonGroup buttons={this.buttons} buttonAll={this.buttonAll} />
+        </div>
+        <div>
+          <div>Callback</div>
+          <ButtonGroup buttons={this.buttons} buttonAll={this.buttonAll} onClick={this.onClick.bind(this)} />
+          <div>
+            {this.state.clickedButton}
+          </div>
+          <div>
+            {this.state.selectedButtons}
+          </div>
         </div>
       </div>
     );
