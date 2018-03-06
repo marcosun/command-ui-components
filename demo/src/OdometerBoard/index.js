@@ -8,7 +8,7 @@ import {OdometerBoard} from 'command-ui-components';
 /**
  * Exports OdometerBoard component
  */
-export default class OdometerBoard extends React.Component {
+export default class Component extends React.Component {
   /**
    * Contstructor function
    * @param {Object} props - Props
@@ -18,31 +18,39 @@ export default class OdometerBoard extends React.Component {
     this.props = props;
 
     this.state = {
-    	data: [{
-    		name: '当日交易笔数',
-    		value: 181,
-    	}, {
-    		name: '月累计交易笔数',
-    		value: 1234,
-    	}, {
-    		name: '年累计交易笔数',
-    		value: 10358,
-    	}],
+      oneBoard: [{
+        name: '当日交易笔数',
+        value: 181,
+      }],
+      multipleBoard: [{
+        name: '当日交易笔数',
+        value: 181,
+      }, {
+        name: '月累计交易笔数',
+        value: 1234,
+      }, {
+        name: '年累计交易笔数',
+        value: 10358,
+      }],
     };
 
     setTimeout(() => {
       this.setState({
         ...this.state,
-        data: [{
-	    		name: '当日交易笔数',
-	    		value: 18191,
-	    	}, {
-	    		name: '月累计交易笔数',
-	    		value: 123451,
-	    	}, {
-	    		name: '年累计交易笔数',
-	    		value: 1035883,
-	    	}],
+        oneBoard: [{
+          name: '当日交易笔数',
+          value: 18191,
+        }],
+        multipleBoard: [{
+          name: '当日交易笔数',
+          value: 18191,
+        }, {
+          name: '月累计交易笔数',
+          value: 123451,
+        }, {
+          name: '年累计交易笔数',
+          value: 1035883,
+        }],
       });
     }, 5000);
   }
@@ -53,7 +61,12 @@ export default class OdometerBoard extends React.Component {
    */
   render() {
     return (
-      <OdometerBoard data={this.state.data}/>
+      <div>
+        <div>One board corresponds to one element: minWidth of every board is 160px</div>
+        <OdometerBoard data={this.state.oneBoard}/>
+        <div>Multiple board</div>
+        <OdometerBoard data={this.state.multipleBoard}/>
+      </div>
     );
   }
 }
