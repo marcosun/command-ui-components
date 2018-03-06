@@ -32,9 +32,17 @@ npm install --save command-ui-components
 #### Config Options
 |Name|Type|Default|Description|
 |:--:|:--:|:-----:|:----------|
+|classes|Object| |Useful to extend the style applied to components|
 |data|Array|[{name: '行驶总里程（公里）',value: 485512,},...]|Name and value of every board|
 |data.name|String|行驶总里程（公里）|Name of every board|
 |data.value|Number|485512|Value of every board|
+
+#### CSS API
+You can override all the class names injected by Command-UI-Components thanks to the classes property. This property accepts the following keys:
+- root
+- container
+- name
+- value
 
 ### 3. ButtonGroup
 
