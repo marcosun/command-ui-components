@@ -10,6 +10,7 @@ import 'odometer/themes/odometer-theme-default.css';
 const styles = (theme) => ({
   root: {
     position: 'relative',
+    width: 'fit-content',
     display: 'flex',
     border: '1px solid rgba(103,140,192,0.38)',
     whiteSpace: 'nowrap',
