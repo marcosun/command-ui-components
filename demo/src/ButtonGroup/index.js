@@ -23,6 +23,10 @@ export default class Component extends React.Component {
     }, {
       name: '选择3',
     }];
+
+    this.buttonAll = {
+      name: '全部',
+    };
   }
 
   /**
@@ -39,6 +43,10 @@ export default class Component extends React.Component {
         <div>
           <div>Multiple Select Buttons</div>
           <ButtonGroup isMultiple={true} buttons={this.buttons} />
+        </div>
+        <div>
+          <div>Multiple Select with All Button</div>
+          <ButtonGroup buttons={this.buttons} buttonAll={this.buttonAll} />
         </div>
       </div>
     );

@@ -12,6 +12,9 @@ const styles = (theme) => ({
   button: {
     margin: '2px',
   },
+  buttonAll: {
+    margin: '2px',
+  },
 });
 
 @withStyles(styles)
@@ -28,12 +31,16 @@ export default class ButtonGroup extends React.Component {
   static propTypes = {
     classes: object.isRequired,
     isMultiple: bool,
-    isSelectAll: bool,
     buttons: arrayOf(shape({
       id: string,
       name: string.isRequired,
       isActive: bool,
     })),
+    buttonAll: shape({
+      id: string,
+      name: string,
+      isActive: bool,
+    }),
     onClick: func,
   };
 
@@ -41,8 +48,8 @@ export default class ButtonGroup extends React.Component {
    * Set default props
    */
   static defaultProps = {
-    isMultiple: false, // Should enable multiple select
-    isSelectAll: false, // Should show `select all` button
+    isMultiple: false, // Whether to enable multiple select
+    buttonAll: {}, // Whether to show button 'select all'
   }
 
   /**
@@ -53,9 +60,17 @@ export default class ButtonGroup extends React.Component {
     super(props);
 
     this.props = props;
+
+    const {
+      isMultiple,
+      buttons,
+      buttonAll,
+    } = this.props;
+
     this.state = {
       // Deep copy to isolate props from internal object manipulations
-      buttons: this.props.buttons.map((button) => {
+      isMultiple: isMultiple,
+      buttons: buttons.map((button) => {
         return {
           ...button,
           // Id default to name
@@ -64,7 +79,20 @@ export default class ButtonGroup extends React.Component {
           isActive: button.isActive === true,
         };
       }),
+      buttonAll: {
+        ...buttonAll,
+        // Id default to name
+        id: buttonAll.id !== void 0 ? buttonAll.id : buttonAll.name,
+        // isActive default to false
+        isActive: buttonAll.isActive === true,
+        isFunctioning: buttonAll.name !== void 0, // Whether to show button 'select all'
+      },
     };
+
+    /**
+     * If buttonAll is functioning, must open multiple select feature
+     */
+    if (this.isButtonAllFunctioning() === true) this.state.isMultiple = true;
 
     this.defer = new Defer(2000);
   }
@@ -77,7 +105,7 @@ export default class ButtonGroup extends React.Component {
   onClick(button) {
     const {
       isMultiple,
-    } = this.props;
+    } = this.state;
 
     if (isMultiple === true) {
       this.setMultipleActive(button);
@@ -90,6 +118,10 @@ export default class ButtonGroup extends React.Component {
         this.setSingleActive(button);
       }
     }
+
+    // if (this.isButtonAllFunctioning() === true) {
+    //   this.setButtonAllActive();
+    // }
   }
 
   /**
@@ -102,6 +134,7 @@ export default class ButtonGroup extends React.Component {
     } = this.state;
 
     this.setState({
+      ...this.state,
       buttons: buttons.map((button) => ({
         ...button,
         isActive: target.id === button.id ? true : false,
@@ -115,56 +148,105 @@ export default class ButtonGroup extends React.Component {
    * Whether it is highlight or reverse
    */
   setMultipleActive(target) {
-    let {
+    const {
       buttons,
+      buttonAll,
     } = this.state;
 
-    this.setState({
-      buttons: buttons.map((button) => ({
-        ...button,
-        isActive: target.id === button.id ? !button.isActive : button.isActive,
-      })),
-    });
+    if (buttonAll.id === target.id) { // Click on button 'all'
+      const isHighlight = !buttonAll.isActive; // Whether to hightlight or unhighlight all buttons
+
+      if (isHighlight === true) { // Highlight every single buttons
+        this.setState({
+          ...this.state,
+          buttons: buttons.map((button) => ({
+            ...button,
+            isActive: true,
+          })),
+          buttonAll: {
+            ...buttonAll,
+            isActive: true,
+          },
+        });
+      } else { // Unhighlight every single buttons
+        this.setState({
+          ...this.state,
+          buttons: buttons.map((button) => ({
+            ...button,
+            isActive: false,
+          })),
+          buttonAll: {
+            ...buttonAll,
+            isActive: false,
+          },
+        });
+      }
+    } else { // Click on buttons except 'all' button
+      /**
+       * Toggle isActive property when the button is clicked
+       */
+      let newState = {
+        ...this.state,
+        buttons: buttons.map((button) => ({
+          ...button,
+          isActive: target.id === button.id ? !button.isActive : button.isActive,
+        })),
+      };
+
+      if (this.isButtonAllFunctioning() === true) {
+        newState = this.synchroniseButtonAll(newState);
+      }
+
+      this.setState(newState);
+    }
   }
 
   /**
-   * 检查有状态按钮个数
-   * @param {Object} item
-   * @param {Object} index
+   * Synchronise buttonAll isActive status when other buttons are clicked
+   * @param  {Object} state - Redux state
+   * @return {Object} - Button all isActive property ynchronised state
    */
-  // checkActive(item, index) {
-  //   let buttonList = item;
-  //   let length = Object.keys(buttonList).length;
-  //   let list = buttonList.filter((value) => {
-  //     return value.isActive === true;
-  //   });
+  synchroniseButtonAll(state) {
+    let {
+      buttons,
+      buttonAll,
+    } = state;
 
-  //   let listisActive = list.map((list) => {
-  //     return list.isActive === true ? list.name : '';
-  //   });
-  //   let allCheck;
-  //   if (Object.keys(list).length === length) {
-  //     allCheck = true;
-  //       this.setState({allCheck: true, chekedList: listisActive});
-  //   } else {
-  //     allCheck = false;
-  //       this.setState({allCheck: false, chekedList: listisActive});
-  //   }
-  //   this.delayedButton.exec(()=> {
-  //     typeof this.props.onClick === 'function' && this.props.onClick(item, allCheck, listisActive, buttonList, index);
-  //   });
-  // }
+    const isAllOtherButtonsActive = buttons.find((button) => {
+      return button.isActive === false;
+    }) === void 0;
+
+    if (isAllOtherButtonsActive) { // All other buttons are highlighted
+      // Highlight 'all' button
+      return {
+        ...state,
+        buttonAll: {
+          ...buttonAll,
+          isActive: true,
+        },
+      };
+    } else { // Not all other buttons are highlighted
+      // Unhighlight 'all' button
+      return {
+        ...state,
+        buttonAll: {
+          ...buttonAll,
+          isActive: false,
+        },
+      }
+    }
+  }
 
   /**
-   * Update buttonList when new props received
-   * For performance reasons, user should prevent frequent update by setting
-   * @param  {Object} nextProps - Props
+   * @return {Boolean} - Whether button all feature is functioning
    */
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({
-  //     buttonList: nextProps.buttonList,
-  //   });
-  // }
+  isButtonAllFunctioning() {
+    const {
+      buttonAll,
+    } = this.state;
+
+    return buttonAll.isFunctioning;
+  }
 
   /**
    * Render ButtonGroup component
@@ -177,10 +259,28 @@ export default class ButtonGroup extends React.Component {
 
     const {
       buttons,
+      buttonAll,
     } = this.state;
 
+    const buttonAllElement = this.isButtonAllFunctioning() === true
+      ? <div className={classes.buttonAllWrapper}>
+        <Button
+          className={classes.buttonAll}
+          variant='raised'
+          size='small'
+          color={buttonAll.isActive === true ? 'primary' : 'default'}
+          onClick={this.onClick.bind(this, buttonAll)}
+        >
+          {buttonAll.name}
+        </Button>
+      </div>
+      : undefined;
+
     return (
-      <div>
+      <div className={classes.root}>
+        {
+          buttonAllElement
+        }
         {
           buttons.map((button) => (
             <Button

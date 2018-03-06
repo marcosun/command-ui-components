@@ -48,10 +48,13 @@ You can override all the class names injected by Command-UI-Components thanks to
 
 |Name|Type|Default|Required|Description
 |:--:|:--:|:-----:|:------:|:----------|
-|isMultiple|Boolean|false|N|Support multiple select or not|
-|isSelectAll|Boolean|false|N|Show 'select all' button or not|
+|isMultiple|Boolean|false|N|Support multiple select|
 |buttons|Array||Y|An array of buttons|
 |buttons.name|String||Y|Button name|
-|buttons.id|String||N|Button id. Equal to name if omitted|
+|buttons.id|String||N|Button id. Equal to name if omitted. Locally unique|
 |buttons.isActive|Boolean|false|N|Should button selected|
+|buttonAll|Object|{}|N|Button 'select all'. If configured to true, it opens multiple select feature, even though isMultiple is configured to false|
+|buttonAll.name|String||Y|Button name|
+|buttonAll.id|String||N|Button id. Equal to name if omitted. Locally unique|
+|buttonAll.isActive|Boolean|false|N|Should button selected|
 |onClick|Function||N|Button click callback
