@@ -1,3 +1,5 @@
+
+
 Command-UI-Components consists a bunch of UI tools for visualisation on large screens. It is my personal UI component package. Due to limited testing, it is not recommended for producton use at this very early stage, however comments and discussions are welcomed.
 
 ## Installation
@@ -33,3 +35,15 @@ npm install --save command-ui-components
 |data|Array|[{name: '行驶总里程（公里）',value: 485512,},...]|Name and value of every board|
 |data.name|String|行驶总里程（公里）|Name of every board|
 |data.value|Number|485512|Value of every board|
+
+### 3. ButtonGroup
+
+|Name|Type|Default|Required|Description
+|:--:|:--:|:-----:|:------:|:----------|
+|isMultiple|Boolean|false|N|Support multiple select or not|
+|isSelectAll|Boolean|false|N|Show 'select all' button or not|
+|buttons|Array||Y|An array of buttons|
+|buttons.name|String||Y|Button name|
+|buttons.id|String||N|Button id. Equal to name if omitted|
+|buttons.isActive|Boolean|false|N|Should button selected|
+|onClick|Function||N|Button click callback
