@@ -9,8 +9,8 @@ import {withStyles} from 'material-ui/styles';
 import Defer from 'Util/Defer';
 
 const styles = (theme) => ({
-  btnStyle: {
-    margin: '0px 5px 5px 0px',
+  button: {
+    margin: '2px',
   },
 });
 
@@ -74,55 +74,29 @@ export default class ButtonGroup extends React.Component {
    * @param  {Object} button - Button object
    * @param  {number} index - Index of the button that has been clicked
    */
-  onClick(button, index) {
+  onClick(button) {
     const {
       isMultiple,
     } = this.props;
 
     if (isMultiple === true) {
-      this.setClickActive(button, index);
+      this.setMultipleActive(button);
     } else {
       if (button.isActive === true) {
         // Button is already highlighted, do nothing
         return;
       } else {
         // Highlight selected button
-        this.setActive(button);
+        this.setSingleActive(button);
       }
     }
   }
 
   /**
-   * 根据点击改变对应按钮状态支持多选
-   * @param {Object} item 按钮属性
-   * @param {Object} index
-   */
-  setClickActive(item, index) {
-    let {
-      buttonList,
-    } = this.state;
-
-    const list = buttonList.map((button, index) => ({
-      ...button,
-      isActive: item.id === button.id ? item.isActive === true ? false: true : button.isActive,
-    }));
-
-    this.setState({
-      buttonList: list,
-    });
-
-    this.delayedButton.exec(() => {
-      typeof this.props.onClick === 'function' && this.props.onClick(item, this.state.allCheck, this.state.chekedList, list, index);
-    });
-
-    this.checkActive(list, index);
-  }
-
-  /**
-   * Highlight button
+   * Highlight single button
    * @param {Object} target - Button object that should be highlighted
    */
-  setActive(target) {
+  setSingleActive(target) {
     let {
       buttons,
     } = this.state;
@@ -136,32 +110,50 @@ export default class ButtonGroup extends React.Component {
   }
 
   /**
+   * Highlight multiple buttons
+   * @param {Object} target - Button object that active status should be switched
+   * Whether it is highlight or reverse
+   */
+  setMultipleActive(target) {
+    let {
+      buttons,
+    } = this.state;
+
+    this.setState({
+      buttons: buttons.map((button) => ({
+        ...button,
+        isActive: target.id === button.id ? !button.isActive : button.isActive,
+      })),
+    });
+  }
+
+  /**
    * 检查有状态按钮个数
    * @param {Object} item
    * @param {Object} index
    */
-  checkActive(item, index) {
-    let buttonList = item;
-    let length = Object.keys(buttonList).length;
-    let list = buttonList.filter((value) => {
-      return value.isActive === true;
-    });
+  // checkActive(item, index) {
+  //   let buttonList = item;
+  //   let length = Object.keys(buttonList).length;
+  //   let list = buttonList.filter((value) => {
+  //     return value.isActive === true;
+  //   });
 
-    let listisActive = list.map((list) => {
-      return list.isActive === true ? list.name : '';
-    });
-    let allCheck;
-    if (Object.keys(list).length === length) {
-      allCheck = true;
-        this.setState({allCheck: true, chekedList: listisActive});
-    } else {
-      allCheck = false;
-        this.setState({allCheck: false, chekedList: listisActive});
-    }
-    this.delayedButton.exec(()=> {
-      typeof this.props.onClick === 'function' && this.props.onClick(item, allCheck, listisActive, buttonList, index);
-    });
-  }
+  //   let listisActive = list.map((list) => {
+  //     return list.isActive === true ? list.name : '';
+  //   });
+  //   let allCheck;
+  //   if (Object.keys(list).length === length) {
+  //     allCheck = true;
+  //       this.setState({allCheck: true, chekedList: listisActive});
+  //   } else {
+  //     allCheck = false;
+  //       this.setState({allCheck: false, chekedList: listisActive});
+  //   }
+  //   this.delayedButton.exec(()=> {
+  //     typeof this.props.onClick === 'function' && this.props.onClick(item, allCheck, listisActive, buttonList, index);
+  //   });
+  // }
 
   /**
    * Update buttonList when new props received
@@ -190,14 +182,14 @@ export default class ButtonGroup extends React.Component {
     return (
       <div>
         {
-          buttons.map((button, index) => (
+          buttons.map((button) => (
             <Button
-              className={classes.btnStyle}
+              className={classes.button}
               key={button.id}
               variant='raised'
               size='small'
               color={button.isActive === true ? 'primary' : 'default'}
-              onClick={this.onClick.bind(this, button, index)}
+              onClick={this.onClick.bind(this, button)}
             >
               {button.name}
             </Button>
