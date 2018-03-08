@@ -5,11 +5,13 @@ import React from 'react';
 import {string, object, array, oneOf} from 'prop-types';
 import Button from 'material-ui/Button';
 import {withStyles} from 'material-ui/styles';
-import {MenuItem, MenuList} from 'material-ui/Menu';
+import {MenuList} from 'material-ui/Menu';
 import Grow from 'material-ui/transitions/Grow';
 import {Manager, Target, Popper} from 'react-popper';
 import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
 import classNames from 'classnames';
+
+import MenuItem from './components/MenuItem';
 
 const styles = (theme) => ({
   root: {
