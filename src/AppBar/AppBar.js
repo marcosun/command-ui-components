@@ -121,24 +121,25 @@ export default class AppBar extends React.Component {
     this.props = props;
 
     this.state = {
-      navs: this.props.navs.map((nav) => {
-        return this.initNav(nav);
-      }),
+      navs: this.initNavs(this.props.navs),
     };
   }
 
   /**
    * Iterate to initialise nav buttons
-   * @param  {[type]} nav - Nav button
+   * @param  {[type]} navs - Nav buttons
    * @return {Object} - Iterated nav buttons
    */
-  initNav(nav) {
-    return {
-      ...nav,
-      id: nav.id !== void 0 ? nav.id : nav.name,
-      isActive: nav.isActive === true,
-      nav: nav.nav === Object(nav.nav) ? this.initNav(nav.nav) : undefined,
-    };
+  initNavs(navs) {
+    return navs.map((nav) => {
+      return {
+        ...nav,
+        id: nav.id !== void 0 ? nav.id : nav.name,
+        isActive: nav.isActive === true,
+        isHover: false,
+        navs: nav.navs === Object(nav.navs) ? this.initNavs(nav.navs) : undefined,
+      };
+    });
   }
 
   /**
