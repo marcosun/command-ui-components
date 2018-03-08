@@ -34,6 +34,17 @@ export default class Component extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
+
+    this.navs = [{
+      name: '综合展示',
+    }, {
+      name: '统计分析',
+      isActive: true,
+    }, {
+      name: '行业应用',
+    }, {
+      name: '数据发布　',
+    }];
   }
 
   /**
@@ -46,7 +57,11 @@ export default class Component extends React.Component {
     } = this.props;
 
     return (
-      <AppBar caption={<div className={classes.caption}><img src={logo} />杭州公交数据大脑</div>} city='杭州'>
+      <AppBar
+        caption={<div className={classes.caption}><img src={logo} />杭州公交数据大脑</div>}
+        city='杭州'
+        navs={this.navs}
+      >
         <div style={{backgroundColor: 'black'}}>Content</div>
       </AppBar>
     );

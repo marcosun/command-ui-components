@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import {string, object, array, oneOf} from 'prop-types';
+import Button from 'material-ui/Button';
 import {withStyles} from 'material-ui/styles';
 import classNames from 'classnames';
 
@@ -51,10 +52,28 @@ const styles = (theme) => ({
   },
   city: {
     position: 'absolute',
-    top: '14px',
+    top: '16px',
     left: '25px',
     fontSize: '12px',
     color: '#FFFFFF',
+  },
+  leftNavs: {
+    position: 'absolute',
+    left: '100px',
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: 'calc(50% - 275px)',
+    height: '100%',
+  },
+  rightNavs: {
+    position: 'absolute',
+    right: '100px',
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: 'calc(50% - 275px)',
+    height: '100%',
   },
 });
 
@@ -70,18 +89,27 @@ const styles = (theme) => ({
 export default class AppBar extends React.Component {
   static propTypes = {
     classes: object.isRequired,
+    caption: object.isRequired,
     /**
      * Absolute: Absolute positioning, does not take space in DOM
      * Relative: Relative positioning, takes space in DOM
      */
-    caption: object.isRequired,
     position: oneOf(['absolute', 'relative']),
     city: string,
-    children: array,
+    /**
+     * Nav buttons
+     * navs.name - Required. Unique.
+     * navs.id - If omitted, equal to nav.name.
+     * navs.isActive - Should nav button be highlighted.
+     * navs.navs - Subnav buttons.
+     */
+    navs: array,
+    children: object,
   };
 
   static defaultProps = {
     position: 'relative',
+    navs: [],
   };
 
    /**
@@ -91,6 +119,26 @@ export default class AppBar extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
+
+    this.state = {
+      navs: this.props.navs.map((nav) => {
+        return this.initNav(nav);
+      }),
+    };
+  }
+
+  /**
+   * Iterate to initialise nav buttons
+   * @param  {[type]} nav - Nav button
+   * @return {Object} - Iterated nav buttons
+   */
+  initNav(nav) {
+    return {
+      ...nav,
+      id: nav.id !== void 0 ? nav.id : nav.name,
+      isActive: nav.isActive === true,
+      nav: nav.nav === Object(nav.nav) ? this.initNav(nav.nav) : undefined,
+    };
   }
 
   /**
@@ -105,6 +153,10 @@ export default class AppBar extends React.Component {
       city,
       children,
     } = this.props;
+
+    const {
+      navs,
+    } = this.state;
 
     const appBarClassName = classNames(classes.appBar, {
       [classes.absolutePositionAppBar]: position === 'absolute',
@@ -124,6 +176,20 @@ export default class AppBar extends React.Component {
             {caption}
           </div>
           <div className={classes.city}>{city}</div>
+          <div className={classes.leftNavs}>
+            {
+              navs.slice(0, 2).map((nav) => {
+                return <Button key={nav.id} color={nav.isActive === true ? 'primary' : ''}>{nav.name}</Button>;
+              })
+            }
+          </div>
+          <div className={classes.rightNavs}>
+            {
+              navs.slice(2, 4).map((nav) => {
+                return <Button key={nav.id} color={nav.isActive === true ? 'primary' : ''}>{nav.name}</Button>;
+              })
+            }
+          </div>
         </div>
         <div className={childrenClassName}>
           {children}
