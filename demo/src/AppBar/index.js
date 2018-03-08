@@ -46,7 +46,7 @@ export default class Component extends React.Component {
     } = this.props;
 
     return (
-      <AppBar caption={<div className={classes.caption}><img src={logo} />杭州公交数据大脑</div>}>
+      <AppBar caption={<div className={classes.caption}><img src={logo} />杭州公交数据大脑</div>} city='杭州'>
         <div style={{backgroundColor: 'black'}}>Content</div>
       </AppBar>
     );

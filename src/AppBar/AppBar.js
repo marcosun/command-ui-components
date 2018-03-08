@@ -2,7 +2,7 @@
  * @module AppBar
  */
 import React from 'react';
-import {object, array, oneOf} from 'prop-types';
+import {string, object, array, oneOf} from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import classNames from 'classnames';
 
@@ -49,6 +49,13 @@ const styles = (theme) => ({
     color: '#FFFFFF',
     textAlign: 'center',
   },
+  city: {
+    position: 'absolute',
+    top: '14px',
+    left: '25px',
+    fontSize: '12px',
+    color: '#FFFFFF',
+  },
 });
 
 /**
@@ -69,6 +76,7 @@ export default class AppBar extends React.Component {
      */
     caption: object.isRequired,
     position: oneOf(['absolute', 'relative']),
+    city: string,
     children: array,
   };
 
@@ -94,6 +102,7 @@ export default class AppBar extends React.Component {
       classes,
       caption,
       position,
+      city,
       children,
     } = this.props;
 
@@ -114,6 +123,7 @@ export default class AppBar extends React.Component {
           <div className={classes.captionContent}>
             {caption}
           </div>
+          <div className={classes.city}>{city}</div>
         </div>
         <div className={childrenClassName}>
           {children}
