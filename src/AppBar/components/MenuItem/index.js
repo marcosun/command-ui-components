@@ -57,7 +57,6 @@ export default class Component extends React.Component {
     } = this.props;
 
     const menuItemClassName = classNames(
-      classes.root,
       {
         [classes.colorInherit]: color === 'inherit',
         [classes.flatPrimary]: color === 'primary',
