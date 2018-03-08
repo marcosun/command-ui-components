@@ -5,6 +5,10 @@ import React from 'react';
 import {string, object, array, oneOf} from 'prop-types';
 import Button from 'material-ui/Button';
 import {withStyles} from 'material-ui/styles';
+import {MenuItem, MenuList} from 'material-ui/Menu';
+import Grow from 'material-ui/transitions/Grow';
+import {Manager, Target, Popper} from 'react-popper';
+import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
 import classNames from 'classnames';
 
 const styles = (theme) => ({
@@ -75,6 +79,19 @@ const styles = (theme) => ({
     width: 'calc(50% - 275px)',
     height: '100%',
   },
+  menuList: {
+    border: `${theme.palette.primary.main} 1px solid`,
+  },
+  menuItem: {
+    justifyContent: 'center',
+    '&:hover': {
+      color: theme.palette.primary.main,
+      backgroundColor: '#0A1432',
+    },
+  },
+  popperClose: {
+    pointerEvents: 'none',
+  },
 });
 
 /**
@@ -128,7 +145,7 @@ export default class AppBar extends React.Component {
   /**
    * Iterate to initialise nav buttons
    * @param  {[type]} navs - Nav buttons
-   * @return {Object} - Iterated nav buttons
+   * @return {Object}
    */
   initNavs(navs) {
     return navs.map((nav) => {
@@ -141,6 +158,73 @@ export default class AppBar extends React.Component {
       };
     });
   }
+
+  /**
+   * Open Popover
+   * @param  {Object} nav - Selected nav button
+   */
+  popoverOpenHandler(nav) {
+    this.setState({
+      navs: this.hoverSingleNav(this.state.navs, nav),
+    });
+  }
+
+  /**
+   * Iterate to set isHover property to true on matched nav button
+   * to false on all other nav buttons
+   * @param  {Array} navs - An array contains all nav buttons
+   * @param  {Object} target - Selected nav button
+   * @return {Array}
+   */
+  hoverSingleNav(navs, target) {
+    return navs.map((nav) => {
+      return {
+        ...nav,
+        isHover: target.id === nav.id ? true : false,
+        navs: nav.navs === Object(nav.navs) ? this.hoverSingleNav(nav.navs, target) : undefined,
+      };
+    });
+  }
+
+  /**
+   * Close all Popovers
+   */
+  popoverCloseHandler() {
+    this.setState({
+      navs: this.unhoverAllNavs(this.state.navs),
+    });
+  }
+
+  /**
+   * Iterate to set isHover property to false for all nav buttons
+   * @param  {Array} navs - An array contains all nav buttons
+   * @return {Array}
+   */
+  unhoverAllNavs(navs) {
+    return navs.map((nav) => {
+      return {
+        ...nav,
+        isHover: false,
+        navs: nav.navs === Object(nav.navs) ? this.unhoverAllNavs(nav.navs) : undefined,
+      };
+    });
+  }
+
+  // popoverCloseHandler() {
+  //   this.setState({
+  //     navs: this.state.navs.map((nav) => {
+  //       return this.closePopover(nav);
+  //     }),
+  //   });
+  // }
+
+  // closePopover(nav) {
+  //   return {
+  //     ...nav,
+  //     isHover: false,
+  //     nav: nav.nav === Object(nav.nav) ? this.closePopover(nav.nav) : undefined,
+  //   };
+  // }
 
   /**
    * Return Header component
@@ -180,14 +264,47 @@ export default class AppBar extends React.Component {
           <div className={classes.leftNavs}>
             {
               navs.slice(0, 2).map((nav) => {
-                return <Button key={nav.id} color={nav.isActive === true ? 'primary' : ''}>{nav.name}</Button>;
+                return (
+                  <Manager key={nav.id}>
+                    <Target>
+                      <Button
+                        color={nav.isActive === true ? 'primary' : 'default'}
+                        onClick={this.popoverOpenHandler.bind(this, nav)}
+                      >{nav.name}</Button>
+                    </Target>
+                    <Popper
+                      placement='bottom'
+                      className={classNames({[classes.popperClose]: !nav.isHover})}
+                    >
+                      <ClickAwayListener onClickAway={this.popoverCloseHandler.bind(this)}>
+                        <Grow in={nav.isHover} style={{transformOrigin: '0 0 0'}}>
+                          <MenuList role="menu" className={classes.menuList}>
+                            {
+                              nav.navs && nav.navs.map((nav) => {
+                                return (
+                                  <MenuItem
+                                    key={nav.id}
+                                    className={classes.menuItem}
+                                    color={nav.isActive === true ? 'primary' : 'default'}
+                                  >
+                                    {nav.name}
+                                  </MenuItem>
+                                );
+                              })
+                            }
+                          </MenuList>
+                        </Grow>
+                      </ClickAwayListener>
+                    </Popper>
+                  </Manager>
+                );
               })
             }
           </div>
           <div className={classes.rightNavs}>
             {
               navs.slice(2, 4).map((nav) => {
-                return <Button key={nav.id} color={nav.isActive === true ? 'primary' : ''}>{nav.name}</Button>;
+                return <Button key={nav.id} color={nav.isActive === true ? 'primary' : 'default'}>{nav.name}</Button>;
               })
             }
           </div>

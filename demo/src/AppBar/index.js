@@ -37,9 +37,24 @@ export default class Component extends React.Component {
 
     this.navs = [{
       name: '综合展示',
+      isActive: true,
+      navs: [{
+        name: '动态展示',
+        isActive: true,
+      }, {
+        name: '人流迁徙',
+      }, {
+        name: '线路和站点详情',
+      }],
     }, {
       name: '统计分析',
-      isActive: true,
+      navs: [{
+        name: '行业指标',
+      }, {
+        name: '高德指标',
+      }, {
+        name: '业务分析',
+      }],
     }, {
       name: '行业应用',
     }, {
