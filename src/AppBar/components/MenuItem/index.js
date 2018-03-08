@@ -50,21 +50,21 @@ export default class Component extends React.Component {
   render() {
     const {
       classes,
-      className,
+      className: classNameProp,
       color,
       children,
       ...other
     } = this.props;
 
-    const menuItemClassName = classNames(
+    const className = classNames(
       {
         [classes.colorInherit]: color === 'inherit',
         [classes.flatPrimary]: color === 'primary',
         [classes.flatSecondary]: color === 'secondary',
       },
-      className,
+      classNameProp,
     );
 
-    return <MenuItem className={menuItemClassName} {...other}>{children}</MenuItem>;
+    return <MenuItem className={className} {...other}>{children}</MenuItem>;
   }
 }
