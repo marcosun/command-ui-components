@@ -106,7 +106,7 @@ export default class Component extends React.Component {
                     <MenuItem
                       key={nav.id}
                       className={classes.menuItem}
-                      color={nav.isActive === true ? 'primary' : 'default'}
+                      color={nav.isActive === true || nav.isOpen === true ? 'primary' : 'default'}
                       nav={nav}
                       onClick={this.onClick.bind(this)}
                     />

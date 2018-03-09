@@ -50,6 +50,15 @@ export default class Component extends React.Component {
       name: '统计分析',
       navs: [{
         name: '行业指标',
+        navs: [{
+          name: '行业指标概述',
+          navs: [{
+            name: '123',
+            navs: [{
+              name: '321',
+            }],
+          }],
+        }],
       }, {
         name: '高德指标',
       }, {
@@ -58,7 +67,7 @@ export default class Component extends React.Component {
     }, {
       name: '行业应用',
     }, {
-      name: '数据发布　',
+      name: '数据发布',
     }];
   }
 
