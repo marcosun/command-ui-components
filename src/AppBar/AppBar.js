@@ -133,17 +133,19 @@ export default class AppBar extends React.Component {
 
   /**
    * Iterate to initialise nav buttons
-   * @param  {[type]} navs - Nav buttons
+   * @param  {Object} navs - Nav buttons
+   * @param  {Number} level - How deep is the iteration
    * @return {Object}
    */
-  initNavs(navs) {
+  initNavs(navs, level = 0) {
     return navs.map((nav) => {
       return {
         ...nav,
         id: nav.id !== void 0 ? nav.id : nav.name,
         isActive: nav.isActive === true,
         isOpen: false,
-        navs: nav.navs instanceof Array ? this.initNavs(nav.navs) : void 0,
+        navs: nav.navs instanceof Array ? this.initNavs(nav.navs, level + 1) : void 0,
+        level: level,
       };
     });
   }
@@ -152,10 +154,9 @@ export default class AppBar extends React.Component {
    * Open Popover
    * @param  {Object} nav - Selected nav button
    */
-  popoverOpenHandler(nav) {
-    console.log('open handler');
+  popoverOpenHandler(...navs) {
     this.setState({
-      navs: this.state.navs instanceof Array ? this.openSingleNav(this.state.navs, nav) : void 0,
+      navs: this.state.navs instanceof Array ? this.openSingleNav(this.state.navs, navs) : void 0,
     });
   }
 
@@ -170,7 +171,7 @@ export default class AppBar extends React.Component {
     return navs.map((nav) => {
       return {
         ...nav,
-        isOpen: target.id === nav.id ? true : nav.isOpen,
+        isOpen: target[nav.level] !== void 0 && target[nav.level].id === nav.id ? true : false,
         navs: nav.navs instanceof Array ? this.openSingleNav(nav.navs, target) : void 0,
       };
     });
@@ -181,7 +182,6 @@ export default class AppBar extends React.Component {
    * Call react render method only if there are some popover is open
    */
   popoverCloseHandler() {
-    console.log('ClickAwayListener');
     if (this.isAllNavsClosed(this.state.navs) === false) {
       this.setState({
         navs: this.closeAllNavs(this.state.navs),
@@ -225,22 +225,6 @@ export default class AppBar extends React.Component {
     });
   }
 
-  // popoverCloseHandler() {
-  //   this.setState({
-  //     navs: this.state.navs.map((nav) => {
-  //       return this.closePopover(nav);
-  //     }),
-  //   });
-  // }
-
-  // closePopover(nav) {
-  //   return {
-  //     ...nav,
-  //     isHover: false,
-  //     nav: nav.nav === Object(nav.nav) ? this.closePopover(nav.nav) : undefined,
-  //   };
-  // }
-
   /**
    * Return Header component
    * @return {Component}
@@ -257,7 +241,7 @@ export default class AppBar extends React.Component {
     const {
       navs,
     } = this.state;
-console.log(navs);
+
     const appBarClassName = classNames(classes.appBar, {
       [classes.absolutePositionAppBar]: position === 'absolute',
       [classes.relativePositionAppBar]: position === 'relative',
@@ -267,6 +251,25 @@ console.log(navs);
       [classes.absolutePositionChildren]: position === 'absolute',
       [classes.relativePositionChildren]: position === 'relative',
     });
+
+    const firstOrderMenuList = (nav) => {
+      return (
+        <Manager key={nav.id}>
+          <Target>
+            <Button
+              color={nav.isActive === true ? 'primary' : 'default'}
+              onClick={this.popoverOpenHandler.bind(this, nav)}
+            >{nav.name}</Button>
+          </Target>
+          <MenuList
+            isOpen={nav.isOpen}
+            placement='bottom'
+            onClick={this.popoverOpenHandler.bind(this, nav)}
+            navs={nav.navs}
+          />
+        </Manager>
+      );
+    };
 
     return (
       <div className={classes.root}>
@@ -280,28 +283,14 @@ console.log(navs);
           <div className={classes.leftNavs}>
             {
               navs.slice(0, 2).map((nav) => {
-                return (
-                  <Manager key={nav.id}>
-                    <Target>
-                      <Button
-                        color={nav.isActive === true ? 'primary' : 'default'}
-                        onClick={this.popoverOpenHandler.bind(this, nav)}
-                      >{nav.name}</Button>
-                    </Target>
-                    <MenuList
-                      isOpen={nav.isOpen}
-                      onClick={this.popoverOpenHandler.bind(this, nav)}
-                      navs={nav.navs}
-                    />
-                  </Manager>
-                );
+                return firstOrderMenuList(nav);
               })
             }
           </div>
           <div className={classes.rightNavs}>
             {
               navs.slice(2, 4).map((nav) => {
-                return <Button key={nav.id} color={nav.isActive === true ? 'primary' : 'default'}>{nav.name}</Button>;
+                return firstOrderMenuList(nav);
               })
             }
           </div>

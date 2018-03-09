@@ -57,12 +57,12 @@ export default class Component extends React.Component {
    * onClick callback
    * @param  {Object} nav - Nav button
    */
-  onClick(nav) {
+  onClick(...navs) {
     const {
       onClick,
     } = this.props;
 
-    typeof onClick === 'function' && onClick(nav);
+    typeof onClick === 'function' && onClick(...navs);
   }
 
   /**
@@ -75,6 +75,7 @@ export default class Component extends React.Component {
       className: classNameProp,
       color,
       nav,
+      onClick,
       ...other
     } = this.props;
 
@@ -97,6 +98,14 @@ export default class Component extends React.Component {
             {...other}
           >{nav.name}</MenuItem>
         </Target>
+        {
+          nav.navs instanceof Array && <MenuList
+            isOpen={nav.isOpen}
+            placement='right'
+            onClick={this.onClick.bind(this, nav)}
+            navs={nav.navs}
+          />
+        }
       </Manager>
     );
   }

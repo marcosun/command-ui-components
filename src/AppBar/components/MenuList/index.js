@@ -3,7 +3,8 @@
  * HOC for material-ui MenuList
  */
 import React from 'react';
-import {bool, string, func, object, array, arrayOf, shape} from 'prop-types';
+import {bool, string, func, object, array, oneOf, arrayOf, shape} from 'prop-types';
+import PopperJS from 'popper.js';
 import {withStyles} from 'material-ui/styles';
 import {MenuList} from 'material-ui/Menu';
 import Grow from 'material-ui/transitions/Grow';
@@ -41,6 +42,7 @@ export default class Component extends React.Component {
   static propTypes = {
     classes: object.isRequired,
     isOpen: bool.isRequired,
+    placement: oneOf(PopperJS.placements),
     navs: arrayOf(shape({
       name: string,
       id: string,
@@ -53,6 +55,7 @@ export default class Component extends React.Component {
 
   static defaultProps = {
     isOpen: false,
+    placement: 'bottom',
   };
 
   /**
@@ -68,12 +71,12 @@ export default class Component extends React.Component {
    * onClick callback
    * @param  {Object} nav - Nav button
    */
-  onClick(nav) {
+  onClick(...navs) {
     const {
       onClick,
     } = this.props;
 
-    typeof onClick === 'function' && onClick(nav);
+    typeof onClick === 'function' && onClick(...navs);
   }
 
   /**
@@ -84,13 +87,15 @@ export default class Component extends React.Component {
     const {
       classes,
       isOpen,
+      placement,
       navs,
+      onClick,
       ...other
     } = this.props;
-console.log(navs);
+
     return (
       <Popper
-        placement='bottom'
+        placement={placement}
         className={classNames({[classes.popperClose]: !isOpen})}
       >
           <Grow in={isOpen} style={{transformOrigin: '0 0 0'}}>
@@ -103,7 +108,7 @@ console.log(navs);
                       className={classes.menuItem}
                       color={nav.isActive === true ? 'primary' : 'default'}
                       nav={nav}
-                      onClick={this.onClick.bind(this, nav)}
+                      onClick={this.onClick.bind(this)}
                     />
                   );
                 })
