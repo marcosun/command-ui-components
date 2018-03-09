@@ -5,10 +5,13 @@
  * Accept color property to config primary or secondary text colour
  */
 import React from 'react';
-import {string, object, node, oneOf} from 'prop-types';
+import {string, bool, array, object, func, oneOf, shape} from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import {MenuItem} from 'material-ui/Menu';
+import {Manager, Target} from 'react-popper';
 import classNames from 'classnames';
+
+import MenuList from '../MenuList';
 
 const styles = (theme) => ({
   flatPrimary: {
@@ -36,12 +39,31 @@ export default class Component extends React.Component {
     classes: object.isRequired,
     className: string,
     color: oneOf(['default', 'inherit', 'primary', 'secondary']),
-    children: node,
+    nav: shape({
+      name: string,
+      id: string,
+      isActive: bool,
+      isHover: bool,
+      navs: array,
+    }),
+    onClick: func,
   };
 
   static defaultProps = {
     color: 'default',
   };
+
+  /**
+   * onClick callback
+   * @param  {Object} nav - Nav button
+   */
+  onClick(nav) {
+    const {
+      onClick,
+    } = this.props;
+
+    typeof onClick === 'function' && onClick(nav);
+  }
 
   /**
    * Return MenuItem component
@@ -52,7 +74,7 @@ export default class Component extends React.Component {
       classes,
       className: classNameProp,
       color,
-      children,
+      nav,
       ...other
     } = this.props;
 
@@ -65,6 +87,17 @@ export default class Component extends React.Component {
       classNameProp,
     );
 
-    return <MenuItem className={className} {...other}>{children}</MenuItem>;
+    // return <MenuItem className={className} {...other}>{children}</MenuItem>;
+    return (
+      <Manager>
+        <Target>
+          <MenuItem
+            className={className}
+            onClick={this.onClick.bind(this, nav)}
+            {...other}
+          >{nav.name}</MenuItem>
+        </Target>
+      </Manager>
+    );
   }
 }

@@ -8,7 +8,6 @@ import {withStyles} from 'material-ui/styles';
 import {MenuList} from 'material-ui/Menu';
 import Grow from 'material-ui/transitions/Grow';
 import {Popper} from 'react-popper';
-import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
 import classNames from 'classnames';
 
 import MenuItem from '../MenuItem';
@@ -49,12 +48,11 @@ export default class Component extends React.Component {
       isHover: bool,
       navs: array,
     })),
-    onClickAway: func,
+    onClick: func,
   };
 
   static defaultProps = {
     isOpen: false,
-    navs: [],
   };
 
   /**
@@ -67,6 +65,18 @@ export default class Component extends React.Component {
   }
 
   /**
+   * onClick callback
+   * @param  {Object} nav - Nav button
+   */
+  onClick(nav) {
+    const {
+      onClick,
+    } = this.props;
+
+    typeof onClick === 'function' && onClick(nav);
+  }
+
+  /**
    * Return MenuList component
    * @return {Component}
    */
@@ -75,7 +85,6 @@ export default class Component extends React.Component {
       classes,
       isOpen,
       navs,
-      onClickAway,
       ...other
     } = this.props;
 console.log(navs);
@@ -84,7 +93,6 @@ console.log(navs);
         placement='bottom'
         className={classNames({[classes.popperClose]: !isOpen})}
       >
-        <ClickAwayListener onClickAway={onClickAway}>
           <Grow in={isOpen} style={{transformOrigin: '0 0 0'}}>
             <MenuList role="menu" className={classes.menuList} {...other}>
               {
@@ -94,16 +102,14 @@ console.log(navs);
                       key={nav.id}
                       className={classes.menuItem}
                       color={nav.isActive === true ? 'primary' : 'default'}
-                      navs={nav.navs}
-                    >
-                      {nav.name}
-                    </MenuItem>
+                      nav={nav}
+                      onClick={this.onClick.bind(this, nav)}
+                    />
                   );
                 })
               }
             </MenuList>
           </Grow>
-        </ClickAwayListener>
       </Popper>
     );
   }
