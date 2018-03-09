@@ -5,13 +5,14 @@ import React from 'react';
 import {string, object, array, oneOf} from 'prop-types';
 import Button from 'material-ui/Button';
 import {withStyles} from 'material-ui/styles';
-import {MenuList} from 'material-ui/Menu';
-import Grow from 'material-ui/transitions/Grow';
-import {Manager, Target, Popper} from 'react-popper';
-import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
+// import {MenuList} from 'material-ui/Menu';
+// import Grow from 'material-ui/transitions/Grow';
+import {Manager, Target} from 'react-popper';
+// import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
 import classNames from 'classnames';
 
-import MenuItem from './components/MenuItem';
+import MenuList from './components/MenuList';
+// import MenuItem from './components/MenuItem';
 
 const styles = (theme) => ({
   root: {
@@ -81,19 +82,9 @@ const styles = (theme) => ({
     width: 'calc(50% - 275px)',
     height: '100%',
   },
-  menuList: {
-    border: `${theme.palette.primary.main} 1px solid`,
-  },
-  menuItem: {
-    justifyContent: 'center',
-    '&:hover': {
-      color: theme.palette.primary.main,
-      backgroundColor: '#0A1432',
-    },
-  },
-  popperClose: {
-    pointerEvents: 'none',
-  },
+  // popperClose: {
+  //   pointerEvents: 'none',
+  // },
 });
 
 /**
@@ -128,7 +119,6 @@ export default class AppBar extends React.Component {
 
   static defaultProps = {
     position: 'relative',
-    navs: [],
   };
 
    /**
@@ -140,7 +130,7 @@ export default class AppBar extends React.Component {
     this.props = props;
 
     this.state = {
-      navs: this.initNavs(this.props.navs),
+      navs: this.props.navs instanceof Array ? this.initNavs(this.props.navs) : void 0,
     };
   }
 
@@ -155,8 +145,8 @@ export default class AppBar extends React.Component {
         ...nav,
         id: nav.id !== void 0 ? nav.id : nav.name,
         isActive: nav.isActive === true,
-        isHover: false,
-        navs: nav.navs === Object(nav.navs) ? this.initNavs(nav.navs) : undefined,
+        isOpen: false,
+        navs: nav.navs instanceof Array ? this.initNavs(nav.navs) : void 0,
       };
     });
   }
@@ -167,47 +157,71 @@ export default class AppBar extends React.Component {
    */
   popoverOpenHandler(nav) {
     this.setState({
-      navs: this.hoverSingleNav(this.state.navs, nav),
+      navs: this.state.navs instanceof Array ? this.openSingleNav(this.state.navs, nav) : void 0,
     });
   }
 
   /**
-   * Iterate to set isHover property to true on matched nav button
+   * Iterate to set isOpen property to true on matched nav button
    * to false on all other nav buttons
    * @param  {Array} navs - An array contains all nav buttons
    * @param  {Object} target - Selected nav button
    * @return {Array}
    */
-  hoverSingleNav(navs, target) {
+  openSingleNav(navs, target) {
     return navs.map((nav) => {
       return {
         ...nav,
-        isHover: target.id === nav.id ? true : false,
-        navs: nav.navs === Object(nav.navs) ? this.hoverSingleNav(nav.navs, target) : undefined,
+        isOpen: target.id === nav.id ? true : false,
+        navs: nav.navs instanceof Array ? this.openSingleNav(nav.navs, target) : void 0,
       };
     });
   }
 
   /**
    * Close all Popovers
+   * Call react render method only if there are some popover is open
    */
   popoverCloseHandler() {
-    this.setState({
-      navs: this.unhoverAllNavs(this.state.navs),
-    });
+    if (this.isAllNavsClosed(this.state.navs) === false) {
+      this.setState({
+        navs: this.closeAllNavs(this.state.navs),
+      });
+    }
   }
 
   /**
-   * Iterate to set isHover property to false for all nav buttons
+   * Check whether all navs are closed
+   * @param  {Object}  navs - Nav buttons
+   * @return {Boolean}
+   */
+  isAllNavsClosed(navs) {
+    let isAllNavsClosed = true;
+
+    for (let i = 0; i < navs.length; i++) {
+      if (navs[i].isOpen === true) {
+        isAllNavsClosed = false;
+      }
+      // Check sub navs
+      if (isAllNavsClosed === true && navs[i].navs instanceof Array) {
+        isAllNavsClosed = this.isAllNavsClosed(navs[i].navs);
+      }
+    }
+
+    return isAllNavsClosed;
+  }
+
+  /**
+   * Iterate to set isOpen property to false for all nav buttons
    * @param  {Array} navs - An array contains all nav buttons
    * @return {Array}
    */
-  unhoverAllNavs(navs) {
+  closeAllNavs(navs) {
     return navs.map((nav) => {
       return {
         ...nav,
-        isHover: false,
-        navs: nav.navs === Object(nav.navs) ? this.unhoverAllNavs(nav.navs) : undefined,
+        isOpen: false,
+        navs: nav.navs instanceof Array ? this.closeAllNavs(nav.navs) : void 0,
       };
     });
   }
@@ -274,30 +288,11 @@ export default class AppBar extends React.Component {
                         onClick={this.popoverOpenHandler.bind(this, nav)}
                       >{nav.name}</Button>
                     </Target>
-                    <Popper
-                      placement='bottom'
-                      className={classNames({[classes.popperClose]: !nav.isHover})}
-                    >
-                      <ClickAwayListener onClickAway={this.popoverCloseHandler.bind(this)}>
-                        <Grow in={nav.isHover} style={{transformOrigin: '0 0 0'}}>
-                          <MenuList role="menu" className={classes.menuList}>
-                            {
-                              nav.navs && nav.navs.map((nav) => {
-                                return (
-                                  <MenuItem
-                                    key={nav.id}
-                                    className={classes.menuItem}
-                                    color={nav.isActive === true ? 'primary' : 'default'}
-                                  >
-                                    {nav.name}
-                                  </MenuItem>
-                                );
-                              })
-                            }
-                          </MenuList>
-                        </Grow>
-                      </ClickAwayListener>
-                    </Popper>
+                    <MenuList
+                      isOpen={nav.isOpen}
+                      onClickAway={this.popoverCloseHandler.bind(this)}
+                      navs={nav.navs}
+                    />
                   </Manager>
                 );
               })

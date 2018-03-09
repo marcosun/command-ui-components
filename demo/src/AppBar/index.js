@@ -73,7 +73,11 @@ export default class Component extends React.Component {
 
     return (
       <AppBar
-        caption={<div className={classes.caption}><img src={logo} />杭州公交数据大脑</div>}
+        caption={
+          <div className={classes.caption}>
+            <img src={logo} />杭州公交数据大脑
+          </div>
+        }
         city='杭州'
         navs={this.navs}
       >
