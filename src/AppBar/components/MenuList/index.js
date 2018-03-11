@@ -42,6 +42,7 @@ export default class Component extends React.Component {
   static propTypes = {
     classes: object.isRequired,
     isOpen: bool.isRequired,
+    actionType: oneOf(['click', 'hover']),
     placement: oneOf(PopperJS.placements),
     navs: arrayOf(shape({
       name: string,
@@ -51,10 +52,12 @@ export default class Component extends React.Component {
       navs: array,
     })),
     onClick: func,
+    onMouseEnter: func,
   };
 
   static defaultProps = {
     isOpen: false,
+    actionType: 'click',
     placement: 'bottom',
   };
 
@@ -69,14 +72,32 @@ export default class Component extends React.Component {
 
   /**
    * onClick callback
-   * @param  {Object} nav - Nav button
+   * @param  {Object} navs - Selected nav buttons
    */
   onClick(...navs) {
     const {
+      actionType,
       onClick,
     } = this.props;
 
+    if (actionType !== 'click') return;
+
     typeof onClick === 'function' && onClick(...navs);
+  }
+
+  /**
+   * onMouseEnter callback
+   * @param  {Object} navs - Selected nav buttons
+   */
+  onMouseEnter(...navs) {
+    const {
+      actionType,
+      onMouseEnter,
+    } = this.props;
+
+    if (actionType !== 'hover') return;
+
+    typeof onMouseEnter === 'function' && onMouseEnter(...navs);
   }
 
   /**
@@ -87,9 +108,11 @@ export default class Component extends React.Component {
     const {
       classes,
       isOpen,
+      actionType,
       placement,
       navs,
       onClick,
+      onMouseEnter,
       ...other
     } = this.props;
 
@@ -106,9 +129,11 @@ export default class Component extends React.Component {
                     <MenuItem
                       key={nav.id}
                       className={classes.menuItem}
+                      actionType={actionType}
                       color={nav.isActive === true || nav.isOpen === true ? 'primary' : 'default'}
                       nav={nav}
                       onClick={this.onClick.bind(this)}
+                      onMouseEnter={this.onMouseEnter.bind(this)}
                     />
                   );
                 })

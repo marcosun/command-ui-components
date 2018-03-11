@@ -89,6 +89,7 @@ export default class Component extends React.Component {
         }
         city='杭州'
         navs={this.navs}
+        actionType='hover'
       >
         <div style={{backgroundColor: 'black'}}>Content</div>
       </AppBar>

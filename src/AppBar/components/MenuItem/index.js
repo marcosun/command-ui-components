@@ -38,6 +38,7 @@ export default class Component extends React.Component {
   static propTypes = {
     classes: object.isRequired,
     className: string,
+    actionType: oneOf(['click', 'hover']),
     color: oneOf(['default', 'inherit', 'primary', 'secondary']),
     nav: shape({
       name: string,
@@ -47,22 +48,42 @@ export default class Component extends React.Component {
       navs: array,
     }),
     onClick: func,
+    onMouseEnter: func,
   };
 
   static defaultProps = {
+    actionType: 'click',
     color: 'default',
   };
 
   /**
    * onClick callback
-   * @param  {Object} nav - Nav button
+   * @param  {Object} navs - Selected nav buttons
    */
   onClick(...navs) {
     const {
+      actionType,
       onClick,
     } = this.props;
 
+    if (actionType !== 'click') return;
+
     typeof onClick === 'function' && onClick(...navs);
+  }
+
+  /**
+   * onMouseEnter callback
+   * @param  {Object} nav - Selected nav buttons
+   */
+  onMouseEnter(...navs) {
+    const {
+      actionType,
+      onMouseEnter,
+    } = this.props;
+
+    if (actionType !== 'hover') return;
+
+    typeof onMouseEnter === 'function' && onMouseEnter(...navs);
   }
 
   /**
@@ -73,9 +94,11 @@ export default class Component extends React.Component {
     const {
       classes,
       className: classNameProp,
+      actionType,
       color,
       nav,
       onClick,
+      onMouseEnter,
       ...other
     } = this.props;
 
@@ -95,15 +118,18 @@ export default class Component extends React.Component {
           <MenuItem
             className={className}
             onClick={this.onClick.bind(this, nav)}
+            onMouseEnter={this.onMouseEnter.bind(this, nav)}
             {...other}
           >{nav.name}</MenuItem>
         </Target>
         {
           nav.navs instanceof Array && <MenuList
             isOpen={nav.isOpen}
+            actionType={actionType}
             placement='right'
-            onClick={this.onClick.bind(this, nav)}
             navs={nav.navs}
+            onClick={this.onClick.bind(this, nav)}
+            onMouseEnter={this.onMouseEnter.bind(this, nav)}
           />
         }
       </Manager>

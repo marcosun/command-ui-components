@@ -103,6 +103,7 @@ export default class AppBar extends React.Component {
      */
     position: oneOf(['absolute', 'relative']),
     city: string,
+    actionType: oneOf(['click', 'hover']),
     /**
      * Nav buttons
      * navs.name - Required. Unique.
@@ -116,6 +117,7 @@ export default class AppBar extends React.Component {
 
   static defaultProps = {
     position: 'relative',
+    actionType: 'click',
   };
 
    /**
@@ -135,7 +137,7 @@ export default class AppBar extends React.Component {
    * Iterate to initialise nav buttons
    * @param  {Object} navs - Nav buttons
    * @param  {Number} level - How deep is the iteration
-   * @return {Object}
+   * @return {objectect}
    */
   initNavs(navs, level = 0) {
     return navs.map((nav) => {
@@ -151,12 +153,40 @@ export default class AppBar extends React.Component {
   }
 
   /**
+   * Nav button click handler
+   * @param  {Array} navs - Selected nav buttons
+   */
+  clickHandler(...navs) {
+    const {
+      actionType,
+    } = this.props;
+
+    if (actionType !== 'click') return;
+
+    this.popoverOpenHandler(...navs);
+  }
+
+  /**
+   * Nav button hover handler
+   * @param  {Array} navs - Selected nav buttons
+   */
+  hoverHandler(...navs) {
+    const {
+      actionType,
+    } = this.props;
+
+    if (actionType !== 'hover') return;
+
+    this.popoverOpenHandler(...navs);
+  }
+
+  /**
    * Open Popover
-   * @param  {Object} nav - Selected nav button
+   * @param  {Object} navs - Selected nav buttons
    */
   popoverOpenHandler(...navs) {
     this.setState({
-      navs: this.state.navs instanceof Array ? this.openSingleNav(this.state.navs, navs) : void 0,
+      navs: this.state.navs instanceof Array ? this.openSingleNav(this.state.navs, ...navs) : void 0,
     });
   }
 
@@ -164,24 +194,42 @@ export default class AppBar extends React.Component {
    * Iterate to set isOpen property to true on matched nav button
    * to false on all other nav buttons
    * @param  {Array} navs - An array contains all nav buttons
-   * @param  {Object} target - Selected nav button
+   * @param  {Object} target - Selected nav buttons
    * @return {Array}
    */
-  openSingleNav(navs, target) {
+  openSingleNav(navs, ...target) {
     return navs.map((nav) => {
       return {
         ...nav,
         isOpen: target[nav.level] !== void 0 && target[nav.level].id === nav.id ? true : false,
-        navs: nav.navs instanceof Array ? this.openSingleNav(nav.navs, target) : void 0,
+        navs: nav.navs instanceof Array ? this.openSingleNav(nav.navs, ...target) : void 0,
       };
     });
   }
 
   /**
-   * Close all Popovers
+   * Close all Popovers when hover away from navs
    * Call react render method only if there are some popover is open
    */
-  popoverCloseHandler() {
+  hoverAwayHandler(...navs) {
+    const {
+      actionType,
+    } = this.props;
+
+    if (actionType !== 'hover') return;
+
+    if (this.isAllNavsClosed(this.state.navs) === false) {
+      this.setState({
+        navs: this.closeAllNavs(this.state.navs),
+      });
+    }
+  }
+
+  /**
+   * Close all Popovers when click away from navs
+   * Call react render method only if there are some popover is open
+   */
+  clickAwayHandler() {
     if (this.isAllNavsClosed(this.state.navs) === false) {
       this.setState({
         navs: this.closeAllNavs(this.state.navs),
@@ -235,6 +283,7 @@ export default class AppBar extends React.Component {
       caption,
       position,
       city,
+      actionType,
       children,
     } = this.props;
 
@@ -252,19 +301,22 @@ export default class AppBar extends React.Component {
       [classes.relativePositionChildren]: position === 'relative',
     });
 
-    const firstOrderMenuList = (nav) => {
+    const firstOrderMenuListElement = (nav) => {
       return (
         <Manager key={nav.id}>
           <Target>
             <Button
               color={nav.isActive === true ? 'primary' : 'default'}
-              onClick={this.popoverOpenHandler.bind(this, nav)}
+              onClick={this.clickHandler.bind(this, nav)}
+              onMouseEnter={this.hoverHandler.bind(this, nav)}
             >{nav.name}</Button>
           </Target>
           <MenuList
             isOpen={nav.isOpen}
             placement='bottom'
-            onClick={this.popoverOpenHandler.bind(this, nav)}
+            actionType={actionType}
+            onClick={this.clickHandler.bind(this, nav)}
+            onMouseEnter={this.hoverHandler.bind(this, nav)}
             navs={nav.navs}
           />
         </Manager>
@@ -279,21 +331,21 @@ export default class AppBar extends React.Component {
             {caption}
           </div>
           <div className={classes.city}>{city}</div>
-          <ClickAwayListener onClickAway={this.popoverCloseHandler.bind(this)}>
-          <div className={classes.leftNavs}>
-            {
-              navs.slice(0, 2).map((nav) => {
-                return firstOrderMenuList(nav);
-              })
-            }
-          </div>
-          <div className={classes.rightNavs}>
-            {
-              navs.slice(2, 4).map((nav) => {
-                return firstOrderMenuList(nav);
-              })
-            }
-          </div>
+          <ClickAwayListener onClickAway={this.clickAwayHandler.bind(this)}>
+            <div className={classes.leftNavs}>
+              {
+                navs.slice(0, 2).map((nav) => {
+                  return firstOrderMenuListElement(nav);
+                })
+              }
+            </div>
+            <div className={classes.rightNavs}>
+              {
+                navs.slice(2, 4).map((nav) => {
+                  return firstOrderMenuListElement(nav);
+                })
+              }
+            </div>
           </ClickAwayListener>
         </div>
         <div className={childrenClassName}>

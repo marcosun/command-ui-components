@@ -37,11 +37,12 @@ const theme = createMuiTheme({
 const render = (Component) => {
   ReactDom.render(
     <AppContainer>
-      <Reboot>
+      <div>
+        <Reboot />
         <MuiThemeProvider theme={theme}>
           <Component />
         </MuiThemeProvider>
-      </Reboot>
+      </div>
     </AppContainer>,
     document.getElementById('app')
   );
