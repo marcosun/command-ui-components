@@ -34,6 +34,7 @@
   "dependencies": {
     "deep-equal": "^1.0.1",
     "material-ui": "^1.0.0-beta.35",
+    "material-ui-icons": "^1.0.0-beta.36",
     "odometer": "^0.4.8",
     "react-odometerjs": "^2.0.0"
   },

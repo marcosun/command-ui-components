@@ -3,10 +3,12 @@
  */
 import React from 'react';
 import {string, object, array, func, oneOf} from 'prop-types';
-import Button from 'material-ui/Button';
 import {withStyles} from 'material-ui/styles';
 import {Manager, Target} from 'react-popper';
 import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
+import Button from 'material-ui/Button';
+import ExpandLess from 'material-ui-icons/ExpandLess';
+import ExpandMore from 'material-ui-icons/ExpandMore';
 import classNames from 'classnames';
 
 import MenuList from './components/MenuList';
@@ -79,9 +81,9 @@ const styles = (theme) => ({
     width: 'calc(50% - 275px)',
     height: '100%',
   },
-  // popperClose: {
-  //   pointerEvents: 'none',
-  // },
+  button: {
+    padding: '15px 16px',
+  },
 });
 
 /**
@@ -297,10 +299,16 @@ export default class AppBar extends React.Component {
         <Manager key={nav.id}>
           <Target>
             <Button
-              color={nav.isActive === true ? 'primary' : 'default'}
+              color={nav.isActive === true || nav.isOpen === true ? 'primary' : 'default'}
+              classes={{
+                root: classes.button,
+              }}
               onClick={this.clickHandler.bind(this, nav)}
               onMouseEnter={this.hoverHandler.bind(this, nav)}
-            >{nav.name}</Button>
+            >
+              {nav.name}
+              {nav.isOpen === true ? <ExpandLess /> : <ExpandMore />}
+            </Button>
           </Target>
           <MenuList
             isOpen={nav.isOpen}
