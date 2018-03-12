@@ -38,7 +38,6 @@ export default class Component extends React.Component {
   static propTypes = {
     classes: object.isRequired,
     className: string,
-    actionType: oneOf(['click', 'hover']),
     color: oneOf(['default', 'inherit', 'primary', 'secondary']),
     nav: shape({
       name: string,
@@ -52,7 +51,6 @@ export default class Component extends React.Component {
   };
 
   static defaultProps = {
-    actionType: 'click',
     color: 'default',
   };
 
@@ -62,11 +60,8 @@ export default class Component extends React.Component {
    */
   onClick(...navs) {
     const {
-      actionType,
       onClick,
     } = this.props;
-
-    if (actionType !== 'click') return;
 
     typeof onClick === 'function' && onClick(...navs);
   }
@@ -77,11 +72,8 @@ export default class Component extends React.Component {
    */
   onMouseEnter(...navs) {
     const {
-      actionType,
       onMouseEnter,
     } = this.props;
-
-    if (actionType !== 'hover') return;
 
     typeof onMouseEnter === 'function' && onMouseEnter(...navs);
   }
@@ -94,7 +86,6 @@ export default class Component extends React.Component {
     const {
       classes,
       className: classNameProp,
-      actionType,
       color,
       nav,
       onClick,
@@ -125,7 +116,6 @@ export default class Component extends React.Component {
         {
           nav.navs instanceof Array && <MenuList
             isOpen={nav.isOpen}
-            actionType={actionType}
             placement='right'
             navs={nav.navs}
             onClick={this.onClick.bind(this, nav)}

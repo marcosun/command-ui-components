@@ -2,7 +2,7 @@
  * @module AppBar
  */
 import React from 'react';
-import {string, object, array, oneOf} from 'prop-types';
+import {string, object, array, func, oneOf} from 'prop-types';
 import Button from 'material-ui/Button';
 import {withStyles} from 'material-ui/styles';
 import {Manager, Target} from 'react-popper';
@@ -103,7 +103,6 @@ export default class AppBar extends React.Component {
      */
     position: oneOf(['absolute', 'relative']),
     city: string,
-    actionType: oneOf(['click', 'hover']),
     /**
      * Nav buttons
      * navs.name - Required. Unique.
@@ -113,11 +112,11 @@ export default class AppBar extends React.Component {
      */
     navs: array,
     children: object,
+    onClick: func,
   };
 
   static defaultProps = {
     position: 'relative',
-    actionType: 'click',
   };
 
    /**
@@ -131,6 +130,16 @@ export default class AppBar extends React.Component {
     this.state = {
       navs: this.props.navs instanceof Array ? this.initNavs(this.props.navs) : void 0,
     };
+  }
+
+  /**
+   * Update state when new props
+   * @param  {Object} nextProps - New props
+   */
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      navs: nextProps.navs instanceof Array ? this.initNavs(nextProps.navs) : void 0,
+    });
   }
 
   /**
@@ -157,26 +166,15 @@ export default class AppBar extends React.Component {
    * @param  {Array} navs - Selected nav buttons
    */
   clickHandler(...navs) {
-    const {
-      actionType,
-    } = this.props;
-
-    if (actionType !== 'click') return;
-
-    this.popoverOpenHandler(...navs);
+    typeof this.props.onClick === 'function' && this.props.onClick(...navs);
   }
 
   /**
    * Nav button hover handler
+   * Open sub navs
    * @param  {Array} navs - Selected nav buttons
    */
   hoverHandler(...navs) {
-    const {
-      actionType,
-    } = this.props;
-
-    if (actionType !== 'hover') return;
-
     this.popoverOpenHandler(...navs);
   }
 
@@ -212,12 +210,6 @@ export default class AppBar extends React.Component {
    * Call react render method only if there are some popover is open
    */
   hoverAwayHandler(...navs) {
-    const {
-      actionType,
-    } = this.props;
-
-    if (actionType !== 'hover') return;
-
     if (this.isAllNavsClosed(this.state.navs) === false) {
       this.setState({
         navs: this.closeAllNavs(this.state.navs),
@@ -283,7 +275,6 @@ export default class AppBar extends React.Component {
       caption,
       position,
       city,
-      actionType,
       children,
     } = this.props;
 
@@ -314,7 +305,6 @@ export default class AppBar extends React.Component {
           <MenuList
             isOpen={nav.isOpen}
             placement='bottom'
-            actionType={actionType}
             onClick={this.clickHandler.bind(this, nav)}
             onMouseEnter={this.hoverHandler.bind(this, nav)}
             navs={nav.navs}

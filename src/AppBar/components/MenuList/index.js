@@ -42,7 +42,6 @@ export default class Component extends React.Component {
   static propTypes = {
     classes: object.isRequired,
     isOpen: bool.isRequired,
-    actionType: oneOf(['click', 'hover']),
     placement: oneOf(PopperJS.placements),
     navs: arrayOf(shape({
       name: string,
@@ -57,7 +56,6 @@ export default class Component extends React.Component {
 
   static defaultProps = {
     isOpen: false,
-    actionType: 'click',
     placement: 'bottom',
   };
 
@@ -76,11 +74,8 @@ export default class Component extends React.Component {
    */
   onClick(...navs) {
     const {
-      actionType,
       onClick,
     } = this.props;
-
-    if (actionType !== 'click') return;
 
     typeof onClick === 'function' && onClick(...navs);
   }
@@ -91,11 +86,8 @@ export default class Component extends React.Component {
    */
   onMouseEnter(...navs) {
     const {
-      actionType,
       onMouseEnter,
     } = this.props;
-
-    if (actionType !== 'hover') return;
 
     typeof onMouseEnter === 'function' && onMouseEnter(...navs);
   }
@@ -108,7 +100,6 @@ export default class Component extends React.Component {
     const {
       classes,
       isOpen,
-      actionType,
       placement,
       navs,
       onClick,
@@ -129,7 +120,6 @@ export default class Component extends React.Component {
                     <MenuItem
                       key={nav.id}
                       className={classes.menuItem}
-                      actionType={actionType}
                       color={nav.isActive === true || nav.isOpen === true ? 'primary' : 'default'}
                       nav={nav}
                       onClick={this.onClick.bind(this)}
