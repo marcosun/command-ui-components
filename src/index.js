@@ -8,3 +8,4 @@ export * from './Digital';
 export * from './OdometerBoard';
 export * from './ButtonGroup';
 export * from './AppBar';
+export * from './Table';
