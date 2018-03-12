@@ -8,10 +8,22 @@
  */
 import React from 'react';
 import ReactDom from 'react-dom';
+import Reboot from 'material-ui/Reboot';
+import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 import {AppContainer} from 'react-hot-loader';
 
 // Separate local imports from dependencies
 import Root from './router';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#4f81ff',
+    },
+    type: 'dark',
+  },
+});
+
 
 /**
  * Wrap react app into hot loader container to enable HMR.
@@ -25,7 +37,12 @@ import Root from './router';
 const render = (Component) => {
   ReactDom.render(
     <AppContainer>
-      <Component />
+      <div>
+        <Reboot />
+        <MuiThemeProvider theme={theme}>
+          <Component />
+        </MuiThemeProvider>
+      </div>
     </AppContainer>,
     document.getElementById('app')
   );

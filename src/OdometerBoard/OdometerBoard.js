@@ -95,16 +95,16 @@ export default class OdometerBoard extends React.Component {
 
     return (
       <div className={classes.root}>
-        {(
-          data.map((item, index) => (
-            <div className={classes.container} key={index}>
+        {
+          data.map((item) => (
+            <div className={classes.container} key={item.name}>
               <div className={classes.name}>{item.name}</div>
                 <div className={classes.value}>
-                <OdometerAnimate value={item.value}></OdometerAnimate>
+                  <OdometerAnimate value={item.value}></OdometerAnimate>
                 </div>
             </div>
           ))
-        )}
+        }
       </div>
     );
   }

@@ -48,8 +48,8 @@ export default class Component extends React.Component {
   }
 
   /**
-   * Render CircularProgress component
-   * @return {Component} - CircularProgress component
+   * Render ButtonGroup component
+   * @return {Component} - ButtonGroup component
    */
   render() {
     return (
