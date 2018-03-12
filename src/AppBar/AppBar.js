@@ -135,7 +135,7 @@ export default class AppBar extends React.Component {
   }
 
   /**
-   * Update state when new props
+   * Update state when new props received
    * @param  {Object} nextProps - New props
    */
   componentWillReceiveProps(nextProps) {
@@ -146,9 +146,9 @@ export default class AppBar extends React.Component {
 
   /**
    * Iterate to initialise nav buttons
-   * @param  {Object} navs - Nav buttons
+   * @param  {Array} navs - Nav buttons
    * @param  {Number} level - How deep is the iteration
-   * @return {objectect}
+   * @return {Array}
    */
   initNavs(navs, level = 0) {
     return navs.map((nav) => {
@@ -177,14 +177,6 @@ export default class AppBar extends React.Component {
    * @param  {Array} navs - Selected nav buttons
    */
   hoverHandler(...navs) {
-    this.popoverOpenHandler(...navs);
-  }
-
-  /**
-   * Open Popover
-   * @param  {Object} navs - Selected nav buttons
-   */
-  popoverOpenHandler(...navs) {
     this.setState({
       navs: this.state.navs instanceof Array ? this.openSingleNav(this.state.navs, ...navs) : void 0,
     });
@@ -205,18 +197,6 @@ export default class AppBar extends React.Component {
         navs: nav.navs instanceof Array ? this.openSingleNav(nav.navs, ...target) : void 0,
       };
     });
-  }
-
-  /**
-   * Close all Popovers when hover away from navs
-   * Call react render method only if there are some popover is open
-   */
-  hoverAwayHandler(...navs) {
-    if (this.isAllNavsClosed(this.state.navs) === false) {
-      this.setState({
-        navs: this.closeAllNavs(this.state.navs),
-      });
-    }
   }
 
   /**
