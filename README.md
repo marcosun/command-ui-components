@@ -58,3 +58,17 @@ You can override all the class names injected by Command-UI-Components thanks to
 |buttonAll.id|String||N|Button id. Equal to name if omitted. Locally unique|
 |buttonAll.isActive|Boolean|false|N|Should button selected|
 |onClick|Function||N|Accept two arguments: clicked button object and all selected button list|
+
+### 4. AppBar
+
+|Name|Type|Default|Required|Description
+|:--:|:--:|:-----:|:------:|:----------|
+|caption|Object||Y|AppBar caption|
+|position|String|relative|N|relative: Document flow AppBar component. absolute: AppBar is absolute positioned|
+|city|String||N|City name|
+|navs|Array||N|Navigation buttons|
+|navs.name|String||Y|Navigation button name|
+|navs.id|String|navs.name|N|Navigation button id, default equal to button name|
+|navs.isActive|Boolean|false|N|Whether button is highlighted|
+|navs.navs|Array||N|Sub navigation button list|
+|onClick|Function||N|Gives a list of arguments. The last argument is the actual navigation button that has been clicked, the previous represents the parent navigation button and so on|
