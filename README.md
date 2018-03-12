@@ -72,3 +72,17 @@ You can override all the class names injected by Command-UI-Components thanks to
 |navs.isActive|Boolean|false|N|Whether button is highlighted|
 |navs.navs|Array||N|Sub navigation button list|
 |onClick|Function||N|Gives a list of arguments. The last argument is the actual navigation button that has been clicked, the previous represents the parent navigation button and so on|
+
+### 5.Table
+
+|Name|Type|Default|Required|Description|
+|:--:|:--:|:-----:|:------:|:------:|
+|columns|Array|[]|Y|Column value|
+|columns.label|String/React dom||Y|Display|
+|columns.prop|String||Y|Correspond to key of data|
+|data|Array|[]|Y|Every cloumns.prop value|
+|isPaginate|Boolean|false|Y|true: Scroll table. false: Paginate table|
+|rowsPerPage|Number|5|Y|Row number every page|
+|selectRowIndex|Number||N|The row of index. If you want to add click style or hover style, you can config this prop and also need to config onRowClick|
+|onRowClick|Function||N|Accept two arguments: clicked row data and clicked row index|
+
