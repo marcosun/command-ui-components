@@ -65,6 +65,7 @@ const styles = (theme) => ({
   },
   leftNavs: {
     position: 'absolute',
+    zIndex: '10000',
     left: '100px',
     display: 'flex',
     justifyContent: 'space-around',
