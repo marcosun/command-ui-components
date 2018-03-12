@@ -82,7 +82,7 @@ const styles = (theme) => ({
     height: '100%',
   },
   button: {
-    padding: '15px 16px',
+    padding: '13px 16px',
   },
 });
 
