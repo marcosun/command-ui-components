@@ -7,8 +7,9 @@
 import React from 'react';
 import {string, bool, array, object, func, oneOf, shape} from 'prop-types';
 import {withStyles} from 'material-ui/styles';
-import {MenuItem} from 'material-ui/Menu';
 import {Manager, Target} from 'react-popper';
+import {MenuItem} from 'material-ui/Menu';
+import KeyboardArrowRight from 'material-ui-icons/KeyboardArrowRight';
 import classNames from 'classnames';
 
 import MenuList from '../MenuList';
@@ -102,7 +103,6 @@ export default class Component extends React.Component {
       classNameProp,
     );
 
-    // return <MenuItem className={className} {...other}>{children}</MenuItem>;
     return (
       <Manager>
         <Target>
@@ -111,7 +111,10 @@ export default class Component extends React.Component {
             onClick={this.onClick.bind(this, nav)}
             onMouseEnter={this.onMouseEnter.bind(this, nav)}
             {...other}
-          >{nav.name}</MenuItem>
+          >
+            {nav.name}
+            {nav.navs instanceof Array && <KeyboardArrowRight />}
+          </MenuItem>
         </Target>
         {
           nav.navs instanceof Array && <MenuList

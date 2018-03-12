@@ -3,10 +3,12 @@
  */
 import React from 'react';
 import {string, object, array, func, oneOf} from 'prop-types';
-import Button from 'material-ui/Button';
 import {withStyles} from 'material-ui/styles';
 import {Manager, Target} from 'react-popper';
 import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
+import Button from 'material-ui/Button';
+import ExpandLess from 'material-ui-icons/ExpandLess';
+import ExpandMore from 'material-ui-icons/ExpandMore';
 import classNames from 'classnames';
 
 import MenuList from './components/MenuList';
@@ -79,9 +81,9 @@ const styles = (theme) => ({
     width: 'calc(50% - 275px)',
     height: '100%',
   },
-  // popperClose: {
-  //   pointerEvents: 'none',
-  // },
+  button: {
+    padding: '15px 16px',
+  },
 });
 
 /**
@@ -133,7 +135,7 @@ export default class AppBar extends React.Component {
   }
 
   /**
-   * Update state when new props
+   * Update state when new props received
    * @param  {Object} nextProps - New props
    */
   componentWillReceiveProps(nextProps) {
@@ -144,9 +146,9 @@ export default class AppBar extends React.Component {
 
   /**
    * Iterate to initialise nav buttons
-   * @param  {Object} navs - Nav buttons
+   * @param  {Array} navs - Nav buttons
    * @param  {Number} level - How deep is the iteration
-   * @return {objectect}
+   * @return {Array}
    */
   initNavs(navs, level = 0) {
     return navs.map((nav) => {
@@ -175,14 +177,6 @@ export default class AppBar extends React.Component {
    * @param  {Array} navs - Selected nav buttons
    */
   hoverHandler(...navs) {
-    this.popoverOpenHandler(...navs);
-  }
-
-  /**
-   * Open Popover
-   * @param  {Object} navs - Selected nav buttons
-   */
-  popoverOpenHandler(...navs) {
     this.setState({
       navs: this.state.navs instanceof Array ? this.openSingleNav(this.state.navs, ...navs) : void 0,
     });
@@ -203,18 +197,6 @@ export default class AppBar extends React.Component {
         navs: nav.navs instanceof Array ? this.openSingleNav(nav.navs, ...target) : void 0,
       };
     });
-  }
-
-  /**
-   * Close all Popovers when hover away from navs
-   * Call react render method only if there are some popover is open
-   */
-  hoverAwayHandler(...navs) {
-    if (this.isAllNavsClosed(this.state.navs) === false) {
-      this.setState({
-        navs: this.closeAllNavs(this.state.navs),
-      });
-    }
   }
 
   /**
@@ -297,10 +279,16 @@ export default class AppBar extends React.Component {
         <Manager key={nav.id}>
           <Target>
             <Button
-              color={nav.isActive === true ? 'primary' : 'default'}
+              color={nav.isActive === true || nav.isOpen === true ? 'primary' : 'default'}
+              classes={{
+                root: classes.button,
+              }}
               onClick={this.clickHandler.bind(this, nav)}
               onMouseEnter={this.hoverHandler.bind(this, nav)}
-            >{nav.name}</Button>
+            >
+              {nav.name}
+              {nav.isOpen === true ? <ExpandLess /> : <ExpandMore />}
+            </Button>
           </Target>
           <MenuList
             isOpen={nav.isOpen}
