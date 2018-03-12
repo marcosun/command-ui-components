@@ -119,7 +119,7 @@ export default class Component extends React.Component {
         {
           nav.navs instanceof Array && <MenuList
             isOpen={nav.isOpen}
-            placement='right'
+            placement='right-start'
             navs={nav.navs}
             onClick={this.onClick.bind(this, nav)}
             onMouseEnter={this.onMouseEnter.bind(this, nav)}

@@ -18,6 +18,7 @@ const styles = (theme) => ({
     pointerEvents: 'none',
   },
   menuList: {
+    padding: 0,
     border: `${theme.palette.primary.main} 1px solid`,
   },
   menuItem: {
