@@ -16,6 +16,9 @@ const styles = (theme) => ({
     lineHeight: '55px',
     fontSize: '22px',
   },
+  menuList: {
+    backgroundColor: 'rgba(0, 2, 5, 0.8)',
+  },
 });
 
 @withStyles(styles)
@@ -126,6 +129,9 @@ export default class Component extends React.Component {
 
     return (
       <AppBar
+        classes={{
+          menuList: classes.menuList,
+        }}
         caption={
           <div className={classes.caption}>
             <img src={logo} />杭州公交数据大脑
@@ -135,7 +141,7 @@ export default class Component extends React.Component {
         navs={this.state.navs}
         onClick={this.clickHandler.bind(this)}
       >
-        <div style={{height: '500px', backgroundColor: 'black'}}>Content</div>
+        <div style={{backgroundColor: 'white'}}>Content</div>
       </AppBar>
     );
   }

@@ -120,6 +120,7 @@ export default class Component extends React.Component {
                   return (
                     <MenuItem
                       key={nav.id}
+                      classes={{menuList: classes.menuList}}
                       className={classes.menuItem}
                       color={
                         nav.isActive === true || nav.isOpen === true

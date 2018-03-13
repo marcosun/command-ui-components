@@ -24,6 +24,7 @@ const styles = (theme) => ({
   colorInherit: {
     color: 'inherit',
   },
+  menuList: {},
 });
 
 /**
@@ -118,6 +119,7 @@ export default class Component extends React.Component {
         </Target>
         {
           nav.navs instanceof Array && <MenuList
+            classes={{menuList: classes.menuList}}
             isOpen={nav.isOpen}
             placement='right-start'
             navs={nav.navs}

@@ -34,13 +34,14 @@ const styles = (theme) => ({
     width: '100%',
   },
   absolutePositionChildren: {
-    height: '100%',
+    height: '100vh',
   },
   relativePositionChildren: {
-    height: 'calc(100% - 50px)',
+    height: 'calc(100vh - 50px)',
   },
   captionBackground: {
     position: 'absolute',
+    zIndex: '10000',
     left: '50%',
     transform: 'translate3d(-50%,0,0)',
     width: '290px',
@@ -51,6 +52,7 @@ const styles = (theme) => ({
   },
   captionContent: {
     position: 'absolute',
+    zIndex: '10000',
     left: '50%',
     transform: 'translate3d(-50%,0,0)',
     color: '#FFFFFF',
@@ -75,6 +77,7 @@ const styles = (theme) => ({
   },
   rightNavs: {
     position: 'absolute',
+    zIndex: '10000',
     right: '100px',
     display: 'flex',
     justifyContent: 'space-around',
@@ -85,6 +88,7 @@ const styles = (theme) => ({
   button: {
     padding: '13px 16px',
   },
+  menuList: {},
 });
 
 /**
@@ -292,6 +296,9 @@ export default class AppBar extends React.Component {
             </Button>
           </Target>
           <MenuList
+            classes={{
+              menuList: classes.menuList,
+            }}
             isOpen={nav.isOpen}
             placement='bottom'
             onClick={this.clickHandler.bind(this, nav)}

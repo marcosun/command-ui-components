@@ -63,6 +63,8 @@ You can override all the class names injected by Command-UI-Components thanks to
 
 |Name|Type|Default|Required|Description
 |:--:|:--:|:-----:|:------:|:----------|
+|classes|Object||N|Css overwrite|
+|classes.menuList|string||N|Overwrite MenuList styles|
 |caption|Object||Y|AppBar caption|
 |position|String|relative|N|relative: Document flow AppBar component. absolute: AppBar is absolute positioned|
 |city|String||N|City name|
