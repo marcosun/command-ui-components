@@ -5,13 +5,13 @@ import React from 'react';
 import {string, object, array, func, oneOf} from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import {Manager, Target} from 'react-popper';
-import ClickAwayListener from 'material-ui/utils/ClickAwayListener';
 import Button from 'material-ui/Button';
 import ExpandLess from 'material-ui-icons/ExpandLess';
 import ExpandMore from 'material-ui-icons/ExpandMore';
 import classNames from 'classnames';
 
 import MenuList from './components/MenuList';
+import {Defer} from 'Util';
 
 const styles = (theme) => ({
   root: {
@@ -34,13 +34,14 @@ const styles = (theme) => ({
     width: '100%',
   },
   absolutePositionChildren: {
-    height: '100%',
+    height: '100vh',
   },
   relativePositionChildren: {
-    height: 'calc(100% - 50px)',
+    height: 'calc(100vh - 50px)',
   },
   captionBackground: {
     position: 'absolute',
+    zIndex: '10000',
     left: '50%',
     transform: 'translate3d(-50%,0,0)',
     width: '290px',
@@ -51,6 +52,7 @@ const styles = (theme) => ({
   },
   captionContent: {
     position: 'absolute',
+    zIndex: '10000',
     left: '50%',
     transform: 'translate3d(-50%,0,0)',
     color: '#FFFFFF',
@@ -75,6 +77,7 @@ const styles = (theme) => ({
   },
   rightNavs: {
     position: 'absolute',
+    zIndex: '10000',
     right: '100px',
     display: 'flex',
     justifyContent: 'space-around',
@@ -85,6 +88,7 @@ const styles = (theme) => ({
   button: {
     padding: '13px 16px',
   },
+  menuList: {},
 });
 
 /**
@@ -133,6 +137,13 @@ export default class AppBar extends React.Component {
     this.state = {
       navs: this.props.navs instanceof Array ? this.initNavs(this.props.navs) : void 0,
     };
+
+    /**
+     * Defer closing all nav menu lists to allow hovering a sub nav menu list
+     * isHover is used to identify if hover a sub nav menu list
+     */
+    this.defer = new Defer(100);
+    this.isHover = false;
   }
 
   /**
@@ -177,7 +188,9 @@ export default class AppBar extends React.Component {
    * Open sub navs
    * @param  {Array} navs - Selected nav buttons
    */
-  hoverHandler(...navs) {
+  onMouseEnter(...navs) {
+    this.isHover = true; // Please refer to onMouseLeave for more details
+
     this.setState({
       navs: this.state.navs instanceof Array ? this.openSingleNav(this.state.navs, ...navs) : void 0,
     });
@@ -201,13 +214,18 @@ export default class AppBar extends React.Component {
   }
 
   /**
-   * Close all Popovers when click away from navs
-   * Call react render method only if there are some popover is open
+   * Close all Popovers when hover away from navs
+   * Call react render method only if there are some opening popovers
+   * Delay executing to allow hovering a sub nav menu list
    */
-  clickAwayHandler() {
+  onMouseLeave() {
+    this.isHover = false;
+
     if (this.isAllNavsClosed(this.state.navs) === false) {
-      this.setState({
-        navs: this.closeAllNavs(this.state.navs),
+      this.defer.exec(() => {
+        this.isHover === false && this.setState({
+          navs: this.closeAllNavs(this.state.navs),
+        });
       });
     }
   }
@@ -285,17 +303,22 @@ export default class AppBar extends React.Component {
                 root: classes.button,
               }}
               onClick={this.clickHandler.bind(this, nav)}
-              onMouseEnter={this.hoverHandler.bind(this, nav)}
+              onMouseEnter={this.onMouseEnter.bind(this, nav)}
+              onMouseLeave={this.onMouseLeave.bind(this)}
             >
               {nav.name}
               {nav.isOpen === true ? <ExpandLess /> : <ExpandMore />}
             </Button>
           </Target>
           <MenuList
+            classes={{
+              menuList: classes.menuList,
+            }}
             isOpen={nav.isOpen}
             placement='bottom'
             onClick={this.clickHandler.bind(this, nav)}
-            onMouseEnter={this.hoverHandler.bind(this, nav)}
+            onMouseEnter={this.onMouseEnter.bind(this, nav)}
+            onMouseLeave={this.onMouseLeave.bind(this)}
             navs={nav.navs}
           />
         </Manager>
@@ -310,7 +333,6 @@ export default class AppBar extends React.Component {
             {caption}
           </div>
           <div className={classes.city}>{city}</div>
-          <ClickAwayListener onClickAway={this.clickAwayHandler.bind(this)}>
             <div className={classes.leftNavs}>
               {
                 navs.slice(0, 2).map((nav) => {
@@ -325,7 +347,6 @@ export default class AppBar extends React.Component {
                 })
               }
             </div>
-          </ClickAwayListener>
         </div>
         <div className={childrenClassName}>
           {children}

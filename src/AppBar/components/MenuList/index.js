@@ -53,6 +53,7 @@ export default class Component extends React.Component {
     })),
     onClick: func,
     onMouseEnter: func,
+    onMouseLeave: func,
   };
 
   static defaultProps = {
@@ -94,6 +95,17 @@ export default class Component extends React.Component {
   }
 
   /**
+   * onMouseLeave callback
+   */
+  onMouseLeave() {
+    const {
+      onMouseLeave,
+    } = this.props;
+
+    typeof onMouseLeave === 'function' && onMouseLeave();
+  }
+
+  /**
    * Return MenuList component
    * @return {Component}
    */
@@ -105,6 +117,7 @@ export default class Component extends React.Component {
       navs,
       onClick,
       onMouseEnter,
+      onMouseLeave,
       ...other
     } = this.props;
 
@@ -120,6 +133,7 @@ export default class Component extends React.Component {
                   return (
                     <MenuItem
                       key={nav.id}
+                      classes={{menuList: classes.menuList}}
                       className={classes.menuItem}
                       color={
                         nav.isActive === true || nav.isOpen === true
@@ -129,6 +143,7 @@ export default class Component extends React.Component {
                       nav={nav}
                       onClick={this.onClick.bind(this)}
                       onMouseEnter={this.onMouseEnter.bind(this)}
+                      onMouseLeave={this.onMouseLeave.bind(this)}
                     />
                   );
                 })

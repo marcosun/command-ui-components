@@ -24,6 +24,7 @@ const styles = (theme) => ({
   colorInherit: {
     color: 'inherit',
   },
+  menuList: {},
 });
 
 /**
@@ -49,6 +50,7 @@ export default class Component extends React.Component {
     }),
     onClick: func,
     onMouseEnter: func,
+    onMouseLeave: func,
   };
 
   static defaultProps = {
@@ -80,6 +82,17 @@ export default class Component extends React.Component {
   }
 
   /**
+   * onMouseLeave callback
+   */
+  onMouseLeave(...navs) {
+    const {
+      onMouseLeave,
+    } = this.props;
+
+    typeof onMouseLeave === 'function' && onMouseLeave(...navs);
+  }
+
+  /**
    * Return MenuItem component
    * @return {Component}
    */
@@ -91,6 +104,7 @@ export default class Component extends React.Component {
       nav,
       onClick,
       onMouseEnter,
+      onMouseLeave,
       ...other
     } = this.props;
 
@@ -110,6 +124,7 @@ export default class Component extends React.Component {
             className={className}
             onClick={this.onClick.bind(this, nav)}
             onMouseEnter={this.onMouseEnter.bind(this, nav)}
+            onMouseLeave={this.onMouseLeave.bind(this)}
             {...other}
           >
             {nav.name}
@@ -117,13 +132,16 @@ export default class Component extends React.Component {
           </MenuItem>
         </Target>
         {
-          nav.navs instanceof Array && <MenuList
-            isOpen={nav.isOpen}
-            placement='right-start'
-            navs={nav.navs}
-            onClick={this.onClick.bind(this, nav)}
-            onMouseEnter={this.onMouseEnter.bind(this, nav)}
-          />
+          nav.navs instanceof Array
+            && <MenuList
+              classes={{menuList: classes.menuList}}
+              isOpen={nav.isOpen}
+              placement='right-start'
+              navs={nav.navs}
+              onClick={this.onClick.bind(this, nav)}
+              onMouseEnter={this.onMouseEnter.bind(this, nav)}
+              onMouseLeave={this.onMouseLeave.bind(this)}
+            />
         }
       </Manager>
     );
