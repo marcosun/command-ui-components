@@ -90,7 +90,6 @@ export default class Component extends React.Component {
       background: 'rgba(3,6,18,0.70)',
     };
 
-
     return (
       <div>
         <div>Default scroll table</div>
