@@ -79,6 +79,7 @@ You can override all the class names injected by Command-UI-Components thanks to
 
 |Name|Type|Default|Required|Description|
 |:--:|:--:|:-----:|:------:|:------:|
+|classes|Object| |N|Useful to extend the style applied to components|
 |columns|Array|[]|Y|Column value|
 |columns.label|String/React dom||Y|Display|
 |columns.prop|String||Y|Correspond to key of data|
