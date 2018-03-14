@@ -88,3 +88,15 @@ You can override all the class names injected by Command-UI-Components thanks to
 |selectRowIndex|Number||N|The row of index. If you want to add click style or hover style, you can config this prop and also need to config onRowClick|
 |onRowClick|Function||N|Accept two arguments: clicked row data and clicked row index|
 
+### 6.Lessen
+
+|Name|Type|Default|Required|Description|
+|:--:|:--:|:-----:|:------:|:------:|
+|classes|Object| |N|Useful to extend the style applied to components|
+|children|Node||N|The content of the component|
+|data|Array||Y|Every lessen data|
+|data.name|String||Y|Tab name|
+|data.id|String||Y|Unique id|
+|data.classes|String||N|Css api. Useful to override leseen style|
+|data.isShowLessen|Boolean||N|Initial lessen display|
+|takeSpace|Boolean|true|Y|Whether tabs take up space in dom|
