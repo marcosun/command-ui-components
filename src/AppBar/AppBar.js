@@ -11,7 +11,7 @@ import ExpandMore from 'material-ui-icons/ExpandMore';
 import classNames from 'classnames';
 
 import MenuList from './components/MenuList';
-import {Defer} from 'Util';
+import {Defer} from '../Util';
 
 const styles = (theme) => ({
   root: {

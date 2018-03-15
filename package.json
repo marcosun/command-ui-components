@@ -2,11 +2,9 @@
   "name": "command-ui-components",
   "version": "0.0.12",
   "description": "A data visualisation ui components",
-  "main": "src/index.js",
+  "main": "cjs/index.js",
   "scripts": {
-    "build:dev": "webpack --config ./config/webpack.dev.js",
-    "build:prod": "webpack --config ./config/webpack.prod.js",
-    "analyse": "webpack --config ./config/webpack.analyse.js",
+    "build": "node ./config/build.js",
     "test": "jest",
     "test:watch": "npm test -- --watch",
     "doc": "jsdoc src -r"
@@ -34,43 +32,30 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "deep-equal": "^1.0.1",
-    "material-ui": "^1.0.0-beta.35",
-    "material-ui-icons": "^1.0.0-beta.36",
     "odometer": "^0.4.8",
     "react-odometerjs": "^2.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-jest": "^21.2.0",
-    "babel-loader": "^7.1.2",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "clean-webpack-plugin": "^0.1.17",
-    "css-loader": "^0.28.10",
     "eslint": "^4.9.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-react": "^7.4.0",
     "jest": "^21.2.1",
     "jsdoc": "^3.5.5",
-    "postcss-loader": "^2.1.1",
-    "prop-types": "^15.6.0",
-    "react": "^16.2.0",
-    "react-dev-utils": "^4.1.0",
-    "react-dom": "^16.2.0",
-    "react-test-renderer": "^16.0.0",
-    "style-loader": "^0.20.2",
-    "uglifyjs-webpack-plugin": "^1.1.4",
-    "url-loader": "^1.0.1",
-    "webpack": "^3.6.0",
-    "webpack-bundle-analyzer": "^2.9.1",
-    "webpack-merge": "^4.1.0"
+    "prop-types": "^15.6.1",
+    "react-test-renderer": "^16.0.0"
   },
   "peerDependencies": {
-    "prop-types": "^15.6.0",
+    "material-ui": "1.0.0-beta.36",
+    "material-ui-icons": "^1.0.0-beta.36",
     "react": "^16.2.0"
   },
   "browserslist": [
@@ -79,7 +64,7 @@
     "ie >= 9"
   ],
   "files": [
-    "index.js",
-    "lib/*.js"
+    "cjs/*.js",
+    "es/*.js"
   ]
 }

@@ -12,7 +12,7 @@ import {
   } from 'prop-types';
 import equal from 'deep-equal';
 
-import {animate} from 'Util';
+import {animate} from '../Util';
 
 /**
  * Circular Progress Component

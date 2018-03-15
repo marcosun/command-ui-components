@@ -1,15 +1,6 @@
 {
-  "presets": [
-    [
-      "env", {
-        "modules": false, // Convert to ES2015 modules
-      },
-    ],
-    "react",
-    "stage-0",
-  ],
+  "presets": ["./config/babel-preset"],
   "plugins": [
-    "transform-decorators-legacy",
-    "transform-es2015-modules-commonjs", // Convert ES2015 modules to CommonJs because Node6 does not support ES2015 features
-  ],
+    "transform-decorators-legacy"
+  ]
 }
