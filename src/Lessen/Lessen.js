@@ -5,8 +5,7 @@ import React from 'react';
 import {object, string, bool, node, arrayOf, shape} from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import classNames from 'classnames';
-
-import lessenIcon from './lessen.png';
+import Icon from 'material-ui/Icon';
 
 const styles = (theme) => ({
   root: {
@@ -32,8 +31,8 @@ const styles = (theme) => ({
     display: 'inline-block',
     marginTop: '3px',
     width: '20px',
-    height: '14px',
-    background: `url(${lessenIcon}) no-repeat 100% 100%`,
+    height: '20px',
+    fontSize: '20px',
     cursor: 'pointer',
   },
   wrap: {
@@ -197,7 +196,9 @@ export default class Lessen extends React.Component {
             className={lessenLayerClassName}
           >
             <div className={classes.lessen} onClick={this.onLessenClick.bind(this, item, index)}>
-              <i className={classes.lessenIcon}></i>
+              <Icon className={classes.lessenIcon} color="secondary">
+                indeterminate_check_box
+              </Icon>
             </div>
             <div className={classes.wrap}>
               {this.props[item.id]}
