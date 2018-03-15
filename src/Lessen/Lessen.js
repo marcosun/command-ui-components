@@ -20,11 +20,6 @@ const styles = (theme) => ({
   takeSpaceChildren: {
     height: 'calc(100% - 34px)',
   },
-  lessenLayer: {
-    position: 'relative',
-    width: '400px',
-    height: '200px',
-  },
   lessen: {
     position: 'absolute',
     top: '10px',
@@ -193,7 +188,7 @@ export default class Lessen extends React.Component {
 
     const lessenLayerElement = (
       data.map((item, index) => {
-        const lessenLayerClassName = classNames(classes.lessenLayer, [item.classes], {
+        const lessenLayerClassName = classNames([item.classes], {
           [classes.hide]: item.isShowLessen === false,
         });
         return (
