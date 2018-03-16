@@ -10,9 +10,9 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 module.exports = {
   appPath: resolveApp('.'),
   appDist: resolveApp('dist'),
-  appSrc: resolveApp('src'),
+  appSrc: resolveApp('demo'),
   appConfig: resolveApp('config'),
-  appIndexJs: resolveApp('src/index.js'),
+  appIndexJs: resolveApp('demo/index.js'),
   appPackageJson: resolveApp('package.json'),
-  commandUiComponents: resolveApp('../lib/command-ui-components'),
+  commandUiComponents: resolveApp('cjs'),
 };
