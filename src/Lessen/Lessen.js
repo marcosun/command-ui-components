@@ -5,7 +5,7 @@ import React from 'react';
 import {object, string, bool, node, arrayOf, shape} from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import classNames from 'classnames';
-import Icon from 'material-ui/Icon';
+import IndeterminateCheckBox from 'material-ui-icons/IndeterminateCheckBox';
 
 const styles = (theme) => ({
   root: {
@@ -26,14 +26,24 @@ const styles = (theme) => ({
     zIndex: '2',
     width: '20px',
     height: '20px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  lessenIconBack: {
+    width: '12px',
+    height: '12px',
+    background: '#fff',
   },
   lessenIcon: {
-    display: 'inline-block',
-    marginTop: '3px',
+    position: 'absolute',
+    top: '0px',
+    left: '0px',
     width: '20px',
     height: '20px',
     fontSize: '20px',
     cursor: 'pointer',
+    color: '#293262',
   },
   wrap: {
     width: '100%',
@@ -196,9 +206,8 @@ export default class Lessen extends React.Component {
             className={lessenLayerClassName}
           >
             <div className={classes.lessen} onClick={this.onLessenClick.bind(this, item, index)}>
-              <Icon className={classes.lessenIcon} color="secondary">
-                indeterminate_check_box
-              </Icon>
+              <div className={classes.lessenIconBack}></div>
+              <IndeterminateCheckBox className={classes.lessenIcon} />
             </div>
             <div className={classes.wrap}>
               {this.props[item.id]}
