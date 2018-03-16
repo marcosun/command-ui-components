@@ -98,6 +98,6 @@ You can override all the class names injected by Command-UI-Components thanks to
 |data|Array||Y|Every lessen data|
 |data.name|String||Y|Tab name|
 |data.id|String||Y|Unique id|
-|data.classes|String||N|Css api. Useful to override leseen style|
+|data.classes|String||N|Css api. Useful to override lessen style|
 |data.isShowLessen|Boolean||N|Initial lessen display|
 |takeSpace|Boolean|true|Y|Whether tabs take up space in dom|
