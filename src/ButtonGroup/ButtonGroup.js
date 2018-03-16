@@ -6,7 +6,7 @@ import {bool, shape, func, number, string, arrayOf, object} from 'prop-types';
 import Button from 'material-ui/Button';
 import {withStyles} from 'material-ui/styles';
 
-import Defer from 'Util/Defer';
+import {Defer} from '../Util';
 
 const styles = (theme) => ({
   button: {
