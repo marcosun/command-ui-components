@@ -33,6 +33,19 @@ module.exports = {
         loader: 'babel-loader',
       },
 
+      { // Styling
+        test: /\.css$/,
+        exclude: paths.nodeModulesPath,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+          },
+        ],
+      },
+
       { // Images
         test: /\.(png|svg|jpg|gif)$/,
         use: [
