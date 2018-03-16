@@ -1,6 +1,6 @@
 {
   "name": "command-ui-components",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "A data visualisation ui components",
   "main": "cjs/index.js",
   "scripts": {
@@ -64,7 +64,7 @@
     "ie >= 9"
   ],
   "files": [
-    "cjs/*.js",
-    "es/*.js"
+    "cjs/*",
+    "es/*"
   ]
 }
