@@ -8,7 +8,7 @@ module.exports = {
     es6: true,
     browser: true,
     node: true,
-    mocha: true,
+    jest: true,
   },
   extends: ['plugin:import/recommended', 'airbnb'],
   parser: 'babel-eslint',
