@@ -1,6 +1,11 @@
 {
-  "presets": ["./script/babel-preset", "stage-0"],
+  "presets": ["./script/babel-preset", "stage-0", "react"],
   "plugins": [
-    "transform-decorators-legacy"
+    "transform-decorators-legacy",
+    ["import", {
+      "libraryName": "lodash",
+      "libraryDirectory": "",
+      "camel2DashComponentName": false
+    }]
   ]
 }
