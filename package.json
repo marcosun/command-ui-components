@@ -24,9 +24,7 @@
   "repository": "git@github.com:marcosun/command-ui-components.git",
   "author": "marcosun <marcoinbristol@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "lodash": "^4.17.11"
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -39,12 +37,16 @@
     "babel-preset-stage-0": "^6.24.1",
     "cross-env": "^5.2.0",
     "eslint": "^5.2.0",
-    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-babel": "^5.2.0",
     "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-material-ui": "^1.0.1",
+    "eslint-plugin-react": "^7.11.1",
     "fs-extra": "^7.0.0",
     "jest": "^23.4.1",
     "nodemon": "^1.18.3",
+    "react": "^16.5.0",
     "rimraf": "^2.6.2"
   },
   "peerDependencies": {
