@@ -24,7 +24,9 @@
   "repository": "git@github.com:marcosun/command-ui-components.git",
   "author": "marcosun <marcoinbristol@gmail.com>",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.11"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
