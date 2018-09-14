@@ -8,8 +8,10 @@ import {
   string,
 } from 'prop-types';
 import { orderBy } from 'lodash';
-import animate from '../util/animate';
-import isObject from '../util/isObject';
+import {
+  animate,
+  isObject,
+} from '../util';
 
 /**
  * Convert angle to Math.PI.
