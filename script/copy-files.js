@@ -10,7 +10,7 @@ async function copyFile(file) {
   if (ENV === 'production') {
     buildPath = path.resolve(__dirname, '../build/', path.basename(file));
   } else {
-    buildPath = path.resolve(__dirname, '../demo/node_modules/js-component-seed/', path.basename(file));
+    buildPath = path.resolve(__dirname, '../demo/node_modules/command-ui-components/', path.basename(file));
   }
 
   console.log(`Copying ${file} to ${buildPath}`);
@@ -40,7 +40,7 @@ async function createPackageFile() {
   if (ENV === 'production') {
     buildPath = path.resolve(__dirname, '../build/package.json');
   } else {
-    buildPath = path.resolve(__dirname, '../demo/node_modules/js-component-seed/package.json');
+    buildPath = path.resolve(__dirname, '../demo/node_modules/command-ui-components/package.json');
   }
 
   await fse.writeFile(buildPath, JSON.stringify(newPackageData, null, 2), 'utf8');
