@@ -89,6 +89,11 @@ export default class Circle extends React.PureComponent {
     this.refresh();
   }
 
+  /* Update canvas. */
+  componentDidUpdate() {
+    this.refresh();
+  }
+
   /* Draw circle arc. */
   draw(from, to) {
     const {
