@@ -1,6 +1,6 @@
 {
   "name": "command-ui-components",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-beta.2",
   "description": "Big screen data visualisation library",
   "main": "src/index.js",
   "scripts": {
